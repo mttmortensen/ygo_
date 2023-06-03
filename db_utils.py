@@ -1,12 +1,14 @@
 import mysql.connector
 from ac_api_call import ygo_ac_call  # Import the function
+from config import get_db_config  # Import the function
 
 def create_connection():
+    config = get_db_config()
     try:
-        connection = mysql.connector.connect(user='mattm',  # Replace with your MySQL username
-                                             password='my$QL03!',  # Replace with your MySQL password
-                                             host='localhost',
-                                             database='ygo_cards')  # Replace with your database name
+        connection = mysql.connector.connect(user=config['user'],  
+                                             password=config['password'],
+                                             host=config['host'],
+                                             database=config['database']) 
 
         if connection.is_connected():
             print('Connected to MySQL database')
@@ -14,6 +16,7 @@ def create_connection():
 
     except mysql.connector.Error as error:
         print(f"Failed to connect to MySQL: {error}")
+
 
 def check_table_exists(connection, table_name):
     cursor = connection.cursor()
