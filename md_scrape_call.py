@@ -1,23 +1,57 @@
 import requests
 from bs4 import BeautifulSoup
 
-def scrape_site(start_url, max_pages):
-    url = start_url
-    for _ in range(max_pages):
-        response = requests.get(url)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
-        # Here, you would scrape the data you're interested in. For example:
-        # articles = soup.find_all('div', class_='article')
-        # for article in articles:
-        #     print(article.text)
+def get_deck_links(start_url, num_decks):
+    # try:
+        # response = requests.get(start_url)
+        # response.raise_for_status()
+    # except requests.exceptions.HTTPError as err:
+        # print(f"HTTP error occurred: {err}")
+        # return []
+           
+    response = requests.get(start_url)
+     
+    # Replace unsupported characters with '?'
+    html_content = response.text.encode('utf-8', errors='replace').decode()
+    print(html_content)
 
-        # Try to find a link to the next page
-        next_link = soup.find('a', rel='next')
+    soup = BeautifulSoup(html_content, 'html.parser')
 
-        if next_link is None:
-            break  # Couldn't find a link to the next page
-        
-        url = next_link.get('href')  # Get the URL for the next page
+    deck_links = []
 
-scrape_site('https://yugiohtopdecks.com/', max_pages=10)
+    # The deck names are in 'h3' tags with class 'decktype'
+    deck_names = soup.find_all('h3', class_='decktype')
+
+    for deck in deck_names[:num_decks]:  # Limit the number of decks
+        link = deck.find('a').get('href')
+        deck_links.append(link)
+
+    return deck_links
+
+def get_deck_list(deck_url):
+    try:
+        response = requests.get(deck_url)
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        print(f"HTTP error occurred: {err}")
+        return []
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    deck_list = []
+
+    # The card names are in 'td' tags with class 'card'
+    card_names = soup.find_all('td', class_='card')
+
+    for card in card_names:
+        deck_list.append(card.text)
+
+    return deck_list
+
+deck_links = get_deck_links('https://yugiohtopdecks.com/', 5)
+print("Deck links:", deck_links)
+
+for link in deck_links:
+    print("Getting deck list for", link)
+    deck_list = get_deck_list('https://yugiohtopdecks.com' + link)
+    print("Deck list:", deck_list)
