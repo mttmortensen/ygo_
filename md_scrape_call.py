@@ -20,4 +20,4 @@ def scrape_site(start_url, max_pages):
         
         url = next_link.get('href')  # Get the URL for the next page
 
-scrape_site('http://example.com/articles', max_pages=10)
+scrape_site('https://yugiohtopdecks.com/', max_pages=10)
