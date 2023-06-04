@@ -1,5 +1,4 @@
 import mysql.connector
-from ac_api_call import ygo_ac_call  # Import the function
 from config import get_db_config  # Import the function
 
 def create_connection():
