@@ -1,1 +1,104 @@
-Deck links: []
+Deck links: ['/deck/9622']
+Getting deck list for: /deck/9622
+Deck list: []
+Deck links: ['/deck/9622', '/deck/9613', '/deck/9615', '/deck/9623', '/deck/9629', '/deck/9633', '/deck/9614', '/deck/9631', '/deck/9630', '/deck/9616', '/deck/9627', '/deck/9620', '/deck/9625', '/deck/9632', '/deck/9626', '/deck/9621', '/deck/9628', '/deck/9617', '/deck/9634', '/deck/9624', '/deck/9618', '/deck/9608', '/deck/9619', '/deck/9612', '/deck/9611', '/deck/9607', '/deck/9609', '/deck/9610', '/deck/9604', '/deck/9605', '/deck/9606', '/deck/9635', '/deck/9591', '/deck/9592', '/deck/9594', '/deck/9593', '/deck/9589', '/deck/9584', '/deck/9587', '/deck/9588', '/deck/9586', '/deck/9583', '/deck/9585', '/deck/9598', '/deck/9597', '/deck/9596', '/deck/9590', '/deck/9595', '/deck/9577', '/deck/9578']
+Getting deck list for: /deck/9622
+Deck list: []
+Getting deck list for: /deck/9613
+Deck list: []
+Getting deck list for: /deck/9615
+Deck list: []
+Getting deck list for: /deck/9623
+Deck list: []
+Getting deck list for: /deck/9629
+Deck list: []
+Getting deck list for: /deck/9633
+Deck list: []
+Getting deck list for: /deck/9614
+Deck list: []
+Getting deck list for: /deck/9631
+Deck list: []
+Getting deck list for: /deck/9630
+Deck list: []
+Getting deck list for: /deck/9616
+Deck list: []
+Getting deck list for: /deck/9627
+Deck list: []
+Getting deck list for: /deck/9620
+Deck list: []
+Getting deck list for: /deck/9625
+Deck list: []
+Getting deck list for: /deck/9632
+Deck list: []
+Getting deck list for: /deck/9626
+Deck list: []
+Getting deck list for: /deck/9621
+Deck list: []
+Getting deck list for: /deck/9628
+Deck list: []
+Getting deck list for: /deck/9617
+Deck list: []
+Getting deck list for: /deck/9634
+Deck list: []
+Getting deck list for: /deck/9624
+Deck list: []
+Getting deck list for: /deck/9618
+Deck list: []
+Getting deck list for: /deck/9608
+Deck list: []
+Getting deck list for: /deck/9619
+Deck list: []
+Getting deck list for: /deck/9612
+Deck list: []
+Getting deck list for: /deck/9611
+Deck list: []
+Getting deck list for: /deck/9607
+Deck list: []
+Getting deck list for: /deck/9609
+Deck list: []
+Getting deck list for: /deck/9610
+Deck list: []
+Getting deck list for: /deck/9604
+Deck list: []
+Getting deck list for: /deck/9605
+Deck list: []
+Getting deck list for: /deck/9606
+Deck list: []
+Getting deck list for: /deck/9635
+Deck list: []
+Getting deck list for: /deck/9591
+Deck list: []
+Getting deck list for: /deck/9592
+Deck list: []
+Getting deck list for: /deck/9594
+Deck list: []
+Getting deck list for: /deck/9593
+Deck list: []
+Getting deck list for: /deck/9589
+Deck list: []
+Getting deck list for: /deck/9584
+Deck list: []
+Getting deck list for: /deck/9587
+Deck list: []
+Getting deck list for: /deck/9588
+Deck list: []
+Getting deck list for: /deck/9586
+Deck list: []
+Getting deck list for: /deck/9583
+Deck list: []
+Getting deck list for: /deck/9585
+Deck list: []
+Getting deck list for: /deck/9598
+Deck list: []
+Getting deck list for: /deck/9597
+Deck list: []
+Getting deck list for: /deck/9596
+Deck list: []
+Getting deck list for: /deck/9590
+Deck list: []
+Getting deck list for: /deck/9595
+Deck list: []
+Getting deck list for: /deck/9577
+Deck list: []
+Getting deck list for: /deck/9578
+Deck list: []
