@@ -12,7 +12,7 @@ def get_deck_links(start_url, num_decks):
     response = requests.get(start_url)
      
     # Replace unsupported characters with '?'
-    html_content = response.text.encode('utf-8', errors='replace').decode()
+    html_content = response.content.decode(errors='replace')
     print(html_content)
 
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -49,9 +49,12 @@ def get_deck_list(deck_url):
     return deck_list
 
 deck_links = get_deck_links('https://yugiohtopdecks.com/', 5)
-print("Deck links:", deck_links)
+
+with open("output.txt", "w", encoding="utf-8") as f:
+    f.write("Deck links: " + str(deck_links) + "\n")
 
 for link in deck_links:
-    print("Getting deck list for", link)
     deck_list = get_deck_list('https://yugiohtopdecks.com' + link)
-    print("Deck list:", deck_list)
+    with open("output.txt", "a", encoding="utf-8") as f:
+        f.write("Getting deck list for: " + link + "\n")
+        f.write("Deck list: " + str(deck_list) + "\n")
