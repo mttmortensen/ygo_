@@ -26,21 +26,21 @@ def get_deck_list(deck_url):
         deck_parts_elements = soup.find_all('h4')
 
         for element in deck_parts_elements:
-            if element.b:  # Add this check to ensure element.b is not None
+            if element.b:
                 part_name = element.b.text
                 if part_name in deck_parts:
                     ul_element = element.find_next_sibling('ul')
                     if ul_element:
                         card_elements = ul_element.find_all('li')
                         for card in card_elements:
-                            deck_list[part_name].append(card.a.text.strip())  # Update here to get card names
+                            card_name = card.a.text.strip()  # Card's name
+                            card_quantity = card.b.text.strip()  # Card's quantity
+                            deck_list[part_name].append((card_quantity, card_name))  # Add as tuple
 
     except requests.exceptions.RequestException as e:
         print(f"Error getting deck list from {deck_url}: {e}")
 
     return deck_list
-
-
 
 deck_links = get_deck_links('https://yugiohtopdecks.com/decklists')
 
