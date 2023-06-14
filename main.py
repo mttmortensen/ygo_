@@ -1,5 +1,5 @@
 from ac_api_call import ygo_ac_call
-from db_utils import create_connection, check_table_exists, count_rows_in_table, insert_data
+from db_utils import create_connection, check_table_exists, count_rows_in_table, insert_data, fetch_all_card_data
 
 # establish connection to database
 connection = create_connection()
@@ -20,4 +20,8 @@ if connection:
     if row_count == 0:
         data = ygo_ac_call()  # Get data from API
         insert_data(connection, data)
+
+#Testing fetching card data
+df = fetch_all_card_data()
+print(df.head())
 

@@ -1,4 +1,5 @@
 import mysql.connector
+import pandas as pd
 from config import get_db_config  # Import the function
 
 def create_connection():
@@ -93,3 +94,33 @@ def insert_data(connection, data):
         cursor.execute(query, list(item.values()))
     connection.commit()
     print("Data inserted successfully")
+
+def fetch_all_card_data():
+    # Get the database configuration
+    db_config = get_db_config()
+
+    # Create a connection to the database
+    cnx = mysql.connector.connect(user=db_config['user'], 
+                                  password=db_config['password'], 
+                                  host=db_config['host'], 
+                                  database=db_config['database'])
+
+    # Create a cursor object
+    cursor = cnx.cursor()
+
+    # Execute a query to fetch all data
+    query = "SELECT * FROM all_cards"
+    cursor.execute(query)
+
+    # Fetch all rows from the last executed statement using fetchall()
+    rows = cursor.fetchall()
+
+    # Convert the data to a pandas DataFrame
+    df = pd.DataFrame(rows, columns=[i[0] for i in cursor.description])
+
+    # Close the cursor and connection
+    cursor.close()
+    cnx.close()
+
+    # Return the DataFrame
+    return df
