@@ -9,4 +9,5 @@ def convert_to_dataframe(rows, columns):
 def fill_missing_values(df, fill_value='Not Applicable'):
     # Fill missing values
     df.fillna(value=fill_value, inplace=True)
+    print("Empty Values have been filled.")
     return df

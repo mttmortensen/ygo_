@@ -120,8 +120,5 @@ def fetch_all_card_data():
     cursor.close()
     cnx.close()
 
-    # Convert the data to a pandas DataFrame using the new function
-    df = convert_to_dataframe(rows, columns)
-
     # Return the DataFrame
-    return df
+    return rows, columns

@@ -23,10 +23,8 @@ if connection:
         insert_data(connection, data)
 
     # Fetch all card data from the database
-    df = fetch_all_card_data()
-    rows = df.values
-    columns = df.columns
-
+    rows, columns = fetch_all_card_data()
+    
     # Convert the data to a pandas DataFrame
     df = convert_to_dataframe(rows, columns)
 
