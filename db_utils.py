@@ -54,7 +54,7 @@ def count_rows_in_table(connection, table_name):
         print(f"Table {table_name} already contains {result[0]} rows.")
         return result[0]
     else:
-        print(f"Table {table_name} is empty.")
+        print(f"Table {table_name} is empty. Insert Data...")
         return 0
 
 def insert_data(connection, data):
