@@ -23,10 +23,28 @@ def check_table_exists(connection, table_name):
     result = cursor.fetchone()
     if result:
         print(f"Table {table_name} exists.")
-        return True
+        return connection
     else:
-        print(f"Table {table_name} does not exist.")
-        return False
+        print(f"Table {table_name} does not exist. Creating it now.")
+        create_table_query = f"""CREATE TABLE {table_name} (
+                                id INT AUTO_INCREMENT PRIMARY KEY,
+                                name VARCHAR(255),
+                                race VARCHAR(255),
+                                level VARCHAR(255),
+                                scale VARCHAR(255),
+                                linkmarkers INT,
+                                linkval VARCHAR(255),
+                                atk INT,
+                                def INT,
+                                archetype VARCHAR(255),
+                                attribute VARCHAR(255),
+                                frameType VARCHAR (255),
+                                type VARCHAR(255),
+                                description TEXT
+                            )"""
+        cursor.execute(create_table_query)
+        print(f"Table {table_name} created.")
+        return connection
 
 def count_rows_in_table(connection, table_name):
     cursor = connection.cursor()

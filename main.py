@@ -5,13 +5,14 @@ from db_utils import create_connection, check_table_exists, count_rows_in_table,
 connection = create_connection()
 
 # check if the table exists
-table_exists = check_table_exists(connection, 'all_cards')
+connection = check_table_exists(connection, 'all_cards')
 
-# if the table exists, check if it's empty
-if table_exists:
+# if the connection is not None, it means the table exists or has been created.
+if connection:
     row_count = count_rows_in_table(connection, 'all_cards')
 
     # if the table is empty, insert data from API
     if row_count == 0:
         data = ygo_ac_call()  # Get data from API
         insert_data(connection, data)
+
