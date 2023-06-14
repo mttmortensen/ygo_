@@ -1,5 +1,5 @@
 import mysql.connector
-import pandas as pd
+from pandas_data_handle import convert_to_dataframe
 from config import get_db_config  # Import the function
 
 def create_connection():
@@ -114,13 +114,14 @@ def fetch_all_card_data():
 
     # Fetch all rows from the last executed statement using fetchall()
     rows = cursor.fetchall()
-
-    # Convert the data to a pandas DataFrame
-    df = pd.DataFrame(rows, columns=[i[0] for i in cursor.description])
+    columns = [i[0] for i in cursor.description]
 
     # Close the cursor and connection
     cursor.close()
     cnx.close()
+
+    # Convert the data to a pandas DataFrame using the new function
+    df = convert_to_dataframe(rows, columns)
 
     # Return the DataFrame
     return df
