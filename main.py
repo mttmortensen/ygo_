@@ -1,5 +1,6 @@
 from ac_api_call import ygo_ac_call
 from db_utils import create_connection, check_table_exists, count_rows_in_table, insert_data, fetch_all_card_data
+from pandas_data_handle import convert_to_dataframe, fill_missing_values  # Import the new functions
 
 # establish connection to database
 connection = create_connection()
@@ -21,7 +22,13 @@ if connection:
         data = ygo_ac_call()  # Get data from API
         insert_data(connection, data)
 
-#Testing fetching card data
-df = fetch_all_card_data()
-print(df.head())
+    # Fetch all card data from the database
+    rows, columns = fetch_all_card_data()
 
+    # Convert the data to a pandas DataFrame
+    df = convert_to_dataframe(rows, columns)
+
+    # Fill missing values
+    df = fill_missing_values(df)
+
+    # Now df is a pandas DataFrame with no missing values, ready for the next steps
