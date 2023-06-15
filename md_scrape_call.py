@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 
 def get_deck_links(start_url):
+    print("Starting to scrape deck links...")
     response = requests.get(start_url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -13,10 +14,11 @@ def get_deck_links(start_url):
 
     # Convert to set and back to list to remove duplicates
     deck_links = list(set(deck_links))
-
+    print("Finished scraping deck links.")
     return deck_links
 
 def get_deck_list(deck_url):
+    print(f"Getting deck list for: {deck_url}")
     try:
         response = requests.get(deck_url)
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -40,15 +42,5 @@ def get_deck_list(deck_url):
     except requests.exceptions.RequestException as e:
         print(f"Error getting deck list from {deck_url}: {e}")
 
+    print(f"Finished getting deck list for: {deck_url}")
     return deck_list
-
-deck_links = get_deck_links('https://yugiohtopdecks.com/decklists')
-
-with open("output.txt", "w", encoding="utf-8") as f:  # Open file in write mode
-    f.write("Deck links: " + str(deck_links) + "\n")
-
-    for link in deck_links:
-        deck_list = get_deck_list('https://yugiohtopdecks.com' + link)  
-        f.write("Getting deck list for: " + link + "\n")
-        f.write("Deck list: " + str(deck_list) + "\n")
-
