@@ -23,6 +23,7 @@ def flatten_deck_data(deck_dict, all_card_data):
     for deck_part, card_list in deck_dict.items():
         for card in card_list:
             card_quantity, card_name = card
+            card_quantity = int(card_quantity.strip('x'))  # Remove 'x' and convert to integer
             card_details = all_card_data[all_card_data['name'] == card_name]
             if not card_details.empty:
                 card_details = card_details.to_dict('records')[0]
