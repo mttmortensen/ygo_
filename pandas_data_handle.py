@@ -16,5 +16,3 @@ def format_numeric_columns(df, numeric_columns):
     for column in numeric_columns:
         df[column] = df[column].apply(lambda x: f"{int(x):04d}" if pd.notnull(pd.to_numeric(x, errors='coerce')) else x)
     return df
-
-
