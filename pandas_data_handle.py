@@ -11,3 +11,10 @@ def fill_missing_values(df, fill_value='Not Applicable'):
     df.fillna(value=fill_value, inplace=True)
     print("Empty Values have been filled.")
     return df
+
+def format_numeric_columns(df, numeric_columns):
+    for column in numeric_columns:
+        df[column] = df[column].apply(lambda x: f"{int(x):04d}" if pd.notnull(pd.to_numeric(x, errors='coerce')) else x)
+    return df
+
+
