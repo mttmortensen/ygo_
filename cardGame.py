@@ -8,30 +8,27 @@ class Player:
         self.hand = []
         self.deck = Deck()
 
-    def draw(self, deck):
-        if deck.cards:  # Check if the deck is not empty
-            card = deck.draw_card()
+    def draw(self):
+        if self.deck.cards:  # Check if the deck is not empty
+            card = self.deck.draw_card()
             self.hand.append(card)
             print(f"{self.name} drew {card}")
             self.show_hand()
         else:
-            print(f"{self.name}'s deck is empty. The game is over.")
             return False
         return True
 
     def show_hand(self):
         print(f"{self.name}'s hand: {self.hand}")
+        print(f"{self.name} hand size is: {len(self.hand)}")
+        print(f"{self.name} deck size is: {len(self.deck.cards)}")
     
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
 
-    def draw_phase(self, deck):
+    def draw_phase(self):
         print(f"{self.name} is in the Draw Phase.")
-        if deck.cards:  # Check if the deck is not empty
-            return self.draw(deck)
-        else:
-            print(f"{self.name}'s deck is empty. The game is over.")
-            return False
+        return self.draw()
 
     def main_phase_1(self):
         print(f"{self.name} is in Main Phase 1.")
@@ -93,17 +90,13 @@ class Game:
             for player in self.players:
                 print(f"\nIt's {player.name}'s turn.")
                 player.standby_phase()
-                if self.deck.cards:  # Only execute the Draw Phase if the deck is not empty
-                    player.draw_phase(self.deck)
-                print(f"{player.name} hand size is: {player.get_hand_size()}")
-                print(f"{player.name} deck size is: {player.get_deck_size()}")
+                if not player.draw_phase():  # If the deck is empty, end the game
+                    print(f"{player.name}'s deck is empty. The game is over.")
+                    return
                 player.main_phase_1()
                 player.battle_phase()
                 player.main_phase_2()
                 player.end_phase()
-                if not self.deck.cards:  # If the deck is empty, end the game
-                    print(f"{player.name}'s deck is empty. The game is over.")
-                    return
 
 # Initialize players
 player1 = Player("Player 1")
