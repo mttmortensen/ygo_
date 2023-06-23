@@ -14,12 +14,31 @@ class Player:
             print(f"{self.name} drew {card}")
             self.show_hand()
         else:
-            print(f"The deck is empty. {self.name} cannot draw a card. The game is over.")
+            print(f"{self.name}'s deck is empty. The game is over.")
             return False
         return True
 
     def show_hand(self):
         print(f"{self.name}'s hand: {self.hand}")
+    
+    def standby_phase(self):
+        print(f"{self.name} is in the Standby Phase.")
+
+    def draw_phase(self):
+        print(f"{self.name} is in the Draw Phase.")
+        return self.draw()
+
+    def main_phase_1(self):
+        print(f"{self.name} is in Main Phase 1.")
+
+    def battle_phase(self):
+        print(f"{self.name} is in the Battle Phase.")
+
+    def main_phase_2(self):
+        print(f"{self.name} is in Main Phase 2.")
+
+    def end_phase(self):
+        print(f"{self.name} is in the End Phase.")
 
 class Deck:
     def __init__(self):
@@ -65,12 +84,17 @@ class Game:
                 if not player.draw(self.deck):  # If the deck is empty, end the game
                     return
 
-        # Game continues until deck is empty
-        while self.deck.cards:
+        # Game continues until a player's deck is empty
+        while True:
             for player in self.players:
                 print(f"It's {player.name}'s turn.")
-                if not player.draw(self.deck):  # If the deck is empty, end the game
+                player.standby_phase()
+                if not player.draw_phase():  # If the deck is empty, end the game
                     return
+                player.main_phase_1()
+                player.battle_phase()
+                player.main_phase_2()
+                player.end_phase()
 
 # Initialize players
 player1 = Player("Player 1")
