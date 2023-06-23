@@ -24,9 +24,14 @@ class Player:
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
 
-    def draw_phase(self):
+    def draw_phase(self, deck):
         print(f"{self.name} is in the Draw Phase.")
-        return self.draw()
+        if deck.cards:  # Check if the deck is not empty
+            return self.draw(deck)
+        else:
+            print(f"{self.name}'s deck is empty. The game is over.")
+            return False
+
 
     def main_phase_1(self):
         print(f"{self.name} is in Main Phase 1.")
@@ -77,24 +82,20 @@ class Game:
         self.deck.shuffle()
 
     def start(self):
-        # Each player draws 5 cards
-        for _ in range(5):
-            for player in self.players:
-                print(f"It's {player.name}'s turn.")
-                if not player.draw(self.deck):  # If the deck is empty, end the game
-                    return
-
         # Game continues until a player's deck is empty
         while True:
             for player in self.players:
-                print(f"It's {player.name}'s turn.")
+                print(f"\nIt's {player.name}'s turn.")
                 player.standby_phase()
-                if not player.draw_phase():  # If the deck is empty, end the game
-                    return
+                if self.deck.cards:  # Only execute the Draw Phase if the deck is not empty
+                    player.draw_phase(self.deck)
                 player.main_phase_1()
                 player.battle_phase()
                 player.main_phase_2()
                 player.end_phase()
+                if not self.deck.cards:  # If the deck is empty, end the game
+                    print(f"{player.name}'s deck is empty. The game is over.")
+                    return
 
 # Initialize players
 player1 = Player("Player 1")
