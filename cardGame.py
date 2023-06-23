@@ -6,6 +6,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.hand = []
+        self.deck = Deck()
 
     def draw(self, deck):
         if deck.cards:  # Check if the deck is not empty
@@ -32,7 +33,6 @@ class Player:
             print(f"{self.name}'s deck is empty. The game is over.")
             return False
 
-
     def main_phase_1(self):
         print(f"{self.name} is in Main Phase 1.")
 
@@ -44,6 +44,12 @@ class Player:
 
     def end_phase(self):
         print(f"{self.name} is in the End Phase.")
+
+    def get_hand_size(self):
+        return len(self.hand)
+
+    def get_deck_size(self):
+        return len(self.deck.cards)
 
 class Deck:
     def __init__(self):
@@ -89,6 +95,8 @@ class Game:
                 player.standby_phase()
                 if self.deck.cards:  # Only execute the Draw Phase if the deck is not empty
                     player.draw_phase(self.deck)
+                print(f"{player.name} hand size is: {player.get_hand_size()}")
+                print(f"{player.name} deck size is: {player.get_deck_size()}")
                 player.main_phase_1()
                 player.battle_phase()
                 player.main_phase_2()
