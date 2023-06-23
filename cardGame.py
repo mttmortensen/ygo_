@@ -14,7 +14,7 @@ class Player:
             print(f"{self.name} drew {card}")
             self.show_hand()
         else:
-            print("The deck is empty. The game is over.")
+            print(f"The deck is empty. {self.name} cannot draw a card. The game is over.")
             return False
         return True
 
@@ -61,11 +61,14 @@ class Game:
         # Each player draws 5 cards
         for _ in range(5):
             for player in self.players:
-                player.draw(self.deck)
+                print(f"It's {player.name}'s turn.")
+                if not player.draw(self.deck):  # If the deck is empty, end the game
+                    return
 
         # Game continues until deck is empty
         while self.deck.cards:
             for player in self.players:
+                print(f"It's {player.name}'s turn.")
                 if not player.draw(self.deck):  # If the deck is empty, end the game
                     return
 
