@@ -58,8 +58,8 @@ class Game:
         self.deck.shuffle()
 
     def start(self):
-        # Each player draws 3 cards
-        for _ in range(3):
+        # Each player draws 5 cards
+        for _ in range(5):
             for player in self.players:
                 player.draw(self.deck)
 
