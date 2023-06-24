@@ -1,5 +1,5 @@
 import mysql.connector
-from ..config import get_db_config  # Importing the function
+from config import get_db_config  # Importing the function
 import random
 
 class Deck:
