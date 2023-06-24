@@ -64,7 +64,7 @@ class Deck:
 
         cursor = db.cursor()
 
-        query = "SELECT * FROM all_cards WHERE frameType = 'normal' LIMIT 6"
+        query = "SELECT * FROM all_cards WHERE frameType = 'normal' LIMIT 7"
 
         cursor.execute(query)
 
@@ -85,6 +85,12 @@ class Game:
         self.deck.shuffle()
 
     def start(self):
+        # Each player draws 5 cards
+        print("Begin the duel...")
+        for player in self.players:
+            for _ in range(5):
+                player.draw()
+
         # Game continues until a player's deck is empty
         while True:
             for player in self.players:
