@@ -1,5 +1,4 @@
 from player import Player
-from deck import Deck
 from game import Game
 
 # Now you can use these classes in your cardGame.py file
