@@ -1,10 +1,12 @@
 from deck import Deck
+import random
 
 class Player:
     def __init__(self, name):
         self.name = name
         self.hand = []
         self.deck = Deck()
+        self.graveyard = []
 
     def draw(self):
         if self.deck.cards:  # Check if the deck is not empty
@@ -12,14 +14,24 @@ class Player:
             self.hand.append(card)
             print(f"{self.name} drew {card}")
             self.show_hand()
+            if len(self.hand) > 7:  # Check if hand size exceeds 7
+                self.discard()  # Discard a card
         else:
+            print(f"{self.name}'s deck is empty. The game is over.")
             return False
         return True
+    
+    def discard(self):
+        card = random.choice(self.hand)  # Choose a random card to discard
+        self.hand.remove(card)  # Remove the card from the hand
+        self.graveyard.append(card)  # Add the card to the graveyard
+        print(f"{self.name} discarded {card} to the graveyard.")
 
     def show_hand(self):
         print(f"{self.name}'s hand: {self.hand}")
         print(f"{self.name} hand size is: {len(self.hand)}")
         print(f"{self.name} deck size is: {len(self.deck.cards)}")
+        print(f"{self.name} graveyard size is: {len(self.graveyard)}")
     
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")

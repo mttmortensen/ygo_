@@ -3,8 +3,6 @@ from deck import Deck
 class Game:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
-        self.deck = Deck()
-        self.deck.shuffle()
 
     def start(self):
         # Each player draws 5 cards
@@ -18,7 +16,11 @@ class Game:
             for player in self.players:
                 print(f"\nIt's {player.name}'s turn.")
                 player.standby_phase()
-                if not player.draw_phase():  # If the deck is empty, end the game
+                if player.deck.cards:  # Only execute the Draw Phase if the deck is not empty
+                    player.draw_phase()
+                    if len(player.hand) >= 7:  # Check if hand size exceeds 7
+                        player.discard()  # Discard a card
+                else:
                     print(f"{player.name}'s deck is empty. The game is over.")
                     return
                 player.main_phase_1()

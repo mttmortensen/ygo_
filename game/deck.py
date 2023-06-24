@@ -18,7 +18,7 @@ class Deck:
 
         cursor = db.cursor()
 
-        query = "SELECT * FROM all_cards WHERE frameType = 'normal' LIMIT 7"
+        query = "SELECT * FROM all_cards WHERE frameType = 'normal' LIMIT 10"
 
         cursor.execute(query)
 
