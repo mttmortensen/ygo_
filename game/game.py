@@ -16,7 +16,7 @@ class Game:
             "current_phase": self.current_phase,
         }
 
-    def start(self):
+    def start_game(self):
         # Each player draws 5 cards
         print("Begin the duel...")
         for player in self.players:

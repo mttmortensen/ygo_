@@ -9,11 +9,22 @@
 
     <pre id="game-state"></pre>
 
+    <button id="start-button">Start Duel!</button>
+
     <button id="update-button">Update Game State</button>
 
     <p id="message"></p>
 
     <script>
+        document.getElementById('start-button').addEventListener('click', function() {
+            fetch('/start_game', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => updateGameState(data));
+        });
+
+
         function updateGameState() {
         fetch('/game_state')
             .then(response => response.json())
