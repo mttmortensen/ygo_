@@ -99,7 +99,7 @@ class Player:
         card.set_position(position)
 
         # Move the card to one of the player's Main Monster Zones
-        for zone in self.field.zones["main_monster_zones"]:
+        for zone in self.field.zones[self.name]["main_monster_zones"]:
             if zone is None:
                 zone = card
                 break
