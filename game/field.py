@@ -14,11 +14,11 @@ class Field:
             "extra_monster_zones": [None, None],
         }
 
-        def get_state(self):
-            state = {
-                "zones": self.zones,
-            }
-            return state
+    def get_state(self):
+        state = {
+            "zones": self.zones,
+        }
+        return state
 
     def place_card(self, player, zone_type, card, position=None):
         # Check Main Monster and Spell/Traps Zones first
