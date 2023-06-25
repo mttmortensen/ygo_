@@ -65,6 +65,9 @@ class Player:
         if self.has_normal_summoned:
             print("You have already performed a Normal Summon this turn.")
             return
+        
+         # Ask the player if they want to perform a normal summon or a tribute summon
+        summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
 
         # Ask the player to choose a card to summon
         print(f"{self.name}, choose a card to summon:")
@@ -74,10 +77,11 @@ class Player:
         card = self.hand[card_index]
 
         # Check if the player has enough monsters to tribute
-        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]
-        if len(monsters_on_field) < card.summon_requirement:
-            print("Not enough monsters on the field to tribute.")
-            return
+        if summon_type.lower() == 'tribute':
+            monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]
+            if len(monsters_on_field) < card.summon_requirement:
+                print("Not enough monsters on the field to tribute.")
+                return
 
         # Ask the player to choose which monsters to tribute
         for _ in range(card.summon_requirement):
