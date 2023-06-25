@@ -11,12 +11,23 @@
 
     <button id="update-button">Update Game State</button>
 
+    <p id="message"></p>
+
     <script>
         function updateGameState() {
-            $.getJSON('/game_state', function(state) {
-                $('#game-state').text(JSON.stringify(state, null, 2));
+        fetch('/game_state')
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    // If the server sent a message, display it on the page
+                    document.getElementById('message').textContent = data.message;
+                } else {
+                    // Otherwise, update the game state as usual
+                    console.log(data);
+                    // Update your page elements here
+                }
             });
-        }
+        }      
 
         $('#update-button').on('click', function() {
             updateGameState();

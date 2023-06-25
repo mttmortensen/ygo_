@@ -16,6 +16,9 @@ def index():
 
 @app.route('/game_state', methods=['GET'])
 def game_state():
+    # Check if the game has started
+    if game.current_phase is None:
+        return jsonify({"message":"The game hasn't started. Please start it or refresh the browser."})
     # This is just a placeholder. You'll need to implement a method
     # to get the current game state as a JSON-serializable dictionary.
     state = game.get_state()
@@ -29,5 +32,13 @@ def perform_action():
     game.perform_action(data['action'])
     return jsonify(success=True)
 
+# Error handling
+@app.errorhandler(500)
+def handle_internal_server_error(e):
+    return jsonify({"error": "An internal server error occurred."}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Not using for now
+# game.start()
