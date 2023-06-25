@@ -27,6 +27,8 @@ class Game:
                     print(f"{player.name}'s deck is empty. The game is over.")
                     return
                 player.main_phase_1()
+                player.summon()
                 player.battle_phase()
                 player.main_phase_2()
+                player.summon()
                 player.end_phase()
