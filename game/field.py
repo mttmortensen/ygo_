@@ -1,13 +1,14 @@
 class Field:
     def __init__(self, player_name):
+        self.player_name = player_name
         self.zones = {
-            player_name: {
+            self.player_name: {
                 "main_monster_zones": [None, None, None, None, None],
-                "spell_trap_zones": [None, None, None, None, None],
+                "spell_and_trap_zones": [None, None, None, None, None],
                 "field_zone": None,
-                "deck_zone": None,
-                "extra_deck_zone": None,
-                "graveyard": None,
+                "graveyard": [],
+                "extra_deck": [],
+                "banished": [],
             },
             # EM Zones can be access by both players
             "extra_monster_zones": [None, None],

@@ -8,6 +8,7 @@ class Player:
         self.hand = []
         self.deck = Deck()
         self.graveyard = []
+        self.field = Field(self.name)
         self.has_normal_summoned = False
         self.can_summon = True
 
@@ -61,7 +62,7 @@ class Player:
         card = self.hand[card_index]
 
         # Check if the player has enough monsters to tribute
-        monsters_on_field = [zone for zone in self.field.zones["main_monster_zones"] if zone is not None]
+        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]
         if len(monsters_on_field) < card.summon_requirement:
             print("Not enough monsters on the field to tribute.")
             return
