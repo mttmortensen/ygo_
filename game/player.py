@@ -47,49 +47,34 @@ class Player:
                 return self.hand[int(card_index)]
             else:
                 print("Invalid input. Please enter a valid number.")
-
     
     def summon(self):
-        if not self.has_normal_summoned:
-            summon_prompt = input(f"{self.name}, would you like to summon a monster? (yes/no): ")
-            if summon_prompt.lower() != "yes":
-                return
-        else:
+        if self.has_normal_summoned:
             print("You have already performed a Normal Summon this turn.")
-            return
-
-        # Ask the player to choose a summon type
-        summon_type = input(f"{self.name}, would you like to perform a Normal Summon or a Tribute Summon? (normal/tribute): ")
-        if summon_type.lower() not in ["normal", "tribute"]:
-            print("Invalid summon type.")
             return
 
         # Ask the player to choose a card to summon
         print(f"{self.name}, choose a card to summon:")
-        normal_summonable_cards = [card for card in self.hand if card.level <= 4]
-        for i, card in enumerate(normal_summonable_cards):
+        for i, card in enumerate(self.hand):
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
         card_index = int(input("Enter the number of the card: "))
-        card = normal_summonable_cards[card_index]
+        card = self.hand[card_index]
 
-        # If the player chose to perform a Tribute Summon
-        if summon_type.lower() == "tribute":
-            # Check if the player has enough monsters to tribute
-            monsters_on_field = [zone for zone in self.field.zones["main_monster_zones"] if zone is not None]
-            if len(monsters_on_field) < card.summon_requirement:
-                print("Not enough monsters on the field to tribute.")
-                return
+        # Check if the player has enough monsters to tribute
+        monsters_on_field = [zone for zone in self.field.zones["main_monster_zones"] if zone is not None]
+        if len(monsters_on_field) < card.summon_requirement:
+            print("Not enough monsters on the field to tribute.")
+            return
 
-            # Ask the player to choose which monsters to tribute
-            for _ in range(card.summon_requirement):
-                print(f"{self.name}, choose a monster to tribute:")
-                for i, monster in enumerate(monsters_on_field):
-                    print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-
-                monster_index = int(input("Enter the number of the monster: "))
-                monster = monsters_on_field.pop(monster_index)
-                self.field.zones["main_monster_zones"].remove(monster)
-                self.graveyard.append(monster)
+        # Ask the player to choose which monsters to tribute
+        for _ in range(card.summon_requirement):
+            print(f"{self.name}, choose a monster to tribute:")
+            for i, monster in enumerate(monsters_on_field):
+                print(f"{i}: {monster.name}")
+            monster_index = int(input("Enter the number of the monster: "))
+            monster = monsters_on_field.pop(monster_index)
+            self.field.zones["main_monster_zones"].remove(monster)
+            self.graveyard.append(monster)
 
         # Remove the card from the player's hand
         self.hand.remove(card)
@@ -98,19 +83,13 @@ class Player:
         position = input("Enter the position for the monster ('attack', 'defense', or 'set'): ")
         card.set_position(position)
 
-        # Move the card to one of the player's Main Monster Zones
-        for zone in self.field.zones[self.name]["main_monster_zones"]:
-            if zone is None:
-                zone = card
-                break
-        else:
-            print("All Main Monster Zones are full.")
+        # Ask the player to choose a zone for the monster
+        print("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):")
+        zone_index = int(input())
+        self.field.place_card(self.name, "main_monster_zones", card, zone_index)
 
         self.has_normal_summoned = True
-        card = self.choose_card_to_summon()
-        self.field.place_card(self.name, "main_monster_zones", card)
         self.can_summon = False
-
     
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")

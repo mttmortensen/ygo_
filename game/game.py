@@ -16,7 +16,7 @@ class Game:
             for _ in range(5):
                 player.draw()
 
-        # Game continues until a player's deck is empty
+               # Game continues until a player's deck is empty
         while True:
             for player in self.players:
                 player.has_normal_summoned = False  # Reset the normal summon status
@@ -29,9 +29,15 @@ class Game:
                 else:
                     print(f"{player.name}'s deck is empty. The game is over.")
                     return
-                player.main_phase_1()
-                player.summon()
-                player.battle_phase()
-                player.main_phase_2()
-                player.summon()
+                print(f"{player.name} is in Main Phase 1.")
+                if player.can_summon:
+                    summon_choice = input("Would you like to summon a monster? (yes/no): ")
+                    if summon_choice.lower() == 'yes':
+                        player.summon()
+                print(f"{player.name} is in the Battle Phase.")
+                print(f"{player.name} is in Main Phase 2.")
+                if player.can_summon:
+                    summon_choice = input("Would you like to summon a monster? (yes/no): ")
+                    if summon_choice.lower() == 'yes':
+                        player.summon()
                 player.end_phase()
