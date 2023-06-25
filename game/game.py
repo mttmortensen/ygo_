@@ -1,5 +1,6 @@
 from deck import Deck
 from field import Field
+from game_utils import get_user_input
 
 class Game:
     def __init__(self, player1, player2):
@@ -43,7 +44,7 @@ class Game:
                 self.current_phase = "Main Phase 1"  # Update current_phase
                 player.main_phase_1()
                 if player.can_summon:
-                    summon_choice = input("Would you like to summon a monster? (yes/no): ")
+                    summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ")
                     if summon_choice.lower() == 'yes':
                         player.summon()
                 print(f"{player.name} is in the Battle Phase.")
@@ -53,7 +54,7 @@ class Game:
                 self.current_phase = "Main Phase 2"  # Update current_phase
                 player.main_phase_2()
                 if player.can_summon:
-                    summon_choice = input("Would you like to summon a monster? (yes/no): ")
+                    summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ")
                     if summon_choice.lower() == 'yes':
                         player.summon()
                 self.current_phase = "End Phase"  # Update current_phase

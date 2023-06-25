@@ -1,5 +1,6 @@
 from deck import Deck
 from field import Field
+from game_utils import get_user_input
 import random
 
 class Player:
@@ -56,11 +57,11 @@ class Player:
             print("Choose a monster to summon:")
             for i, card in enumerate(self.hand):
                 print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-            card_index = input("Enter the number of the card: ")
+            card_index = get_user_input("Enter the number of the card: ")
             if card_index.isdigit() and int(card_index) in range(len(self.hand)):
                 return self.hand[int(card_index)]
             else:
-                print("Invalid input. Please enter a valid number.")
+                print("Invalid get_user_input. Please enter a valid number.")
     
     def summon(self):
         if self.has_normal_summoned:
@@ -71,7 +72,7 @@ class Player:
         print(f"{self.name}, choose a card to summon:")
         for i, card in enumerate(self.hand):
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-        card_index = int(input("Enter the number of the card: "))
+        card_index = int(get_user_input("Enter the number of the card: "))
         card = self.hand[card_index]
 
         # Check if the player has enough monsters to tribute
@@ -85,7 +86,7 @@ class Player:
             print(f"{self.name}, choose a monster to tribute:")
             for i, monster in enumerate(monsters_on_field):
                 print(f"{i}: {monster.name}")
-            monster_index = int(input("Enter the number of the monster: "))
+            monster_index = int(get_user_input("Enter the number of the monster: "))
             monster = monsters_on_field.pop(monster_index)
             self.field.zones["main_monster_zones"].remove(monster)
             self.graveyard.append(monster)
@@ -94,12 +95,12 @@ class Player:
         self.hand.remove(card)
 
         # Ask the player to choose a position for the monster
-        position = input("Enter the battle position for the monster ('attack' or 'set'): ")
+        position = get_user_input("Enter the battle position for the monster ('attack' or 'set'): ")
         card.set_position(position)
 
         # Ask the player to choose a zone for the monster
         print("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):")
-        zone_index = int(input())
+        zone_index = int(get_user_input())
         self.field.place_card(self.name, "main_monster_zones", card, zone_index)
 
         self.has_normal_summoned = True
