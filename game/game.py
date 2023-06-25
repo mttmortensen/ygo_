@@ -16,6 +16,7 @@ class Game:
         # Game continues until a player's deck is empty
         while True:
             for player in self.players:
+                player.has_normal_summoned = False  # Reset the normal summon status
                 print(f"\nIt's {player.name}'s turn.")
                 player.standby_phase()
                 if player.deck.cards:  # Only execute the Draw Phase if the deck is not empty

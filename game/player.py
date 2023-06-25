@@ -35,6 +35,52 @@ class Player:
         print(f"{self.name} hand size is: {len(self.hand)}")
         print(f"{self.name} deck size is: {len(self.deck.cards)}")
         print(f"{self.name} graveyard size is: {len(self.graveyard)}")
+
+    def summon(self):
+        if self.has_normal_summoned:
+            print("You have already performed a Normal Summon this turn.")
+            return
+
+        # Ask the player to choose a card to summon
+        print(f"{self.name}, choose a card to summon:")
+        for i, card in enumerate(self.hand):
+            print(f"{i}: {card.name}")
+        card_index = int(input("Enter the number of the card: "))
+        card = self.hand[card_index]
+
+        # Check if the player has enough monsters to tribute
+        monsters_on_field = [zone for zone in self.field.zones["main_monster_zones"] if zone is not None]
+        if len(monsters_on_field) < card.summon_requirement:
+            print("Not enough monsters on the field to tribute.")
+            return
+
+        # Ask the player to choose which monsters to tribute
+        for _ in range(card.summon_requirement):
+            print(f"{self.name}, choose a monster to tribute:")
+            for i, monster in enumerate(monsters_on_field):
+                print(f"{i}: {monster.name}")
+            monster_index = int(input("Enter the number of the monster: "))
+            monster = monsters_on_field.pop(monster_index)
+            self.field.zones["main_monster_zones"].remove(monster)
+            self.graveyard.append(monster)
+
+        # Remove the card from the player's hand
+        self.hand.remove(card)
+
+        # Ask the player to choose a position for the monster
+        position = input("Enter the position for the monster ('attack', 'defense', or 'set'): ")
+        card.set_position(position)
+
+        # Move the card to one of the player's Main Monster Zones
+        for zone in self.field.zones["main_monster_zones"]:
+            if zone is None:
+                zone = card
+                break
+        else:
+            print("All Main Monster Zones are full.")
+
+        self.has_normal_summoned = True
+        self.can_summon = False
     
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
@@ -45,12 +91,14 @@ class Player:
 
     def main_phase_1(self):
         print(f"{self.name} is in Main Phase 1.")
+        self.can_summon = True
 
     def battle_phase(self):
         print(f"{self.name} is in the Battle Phase.")
 
     def main_phase_2(self):
         print(f"{self.name} is in Main Phase 2.")
+        self.can_summon = True
 
     def end_phase(self):
         print(f"{self.name} is in the End Phase.")
