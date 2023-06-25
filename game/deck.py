@@ -25,16 +25,10 @@ class Deck:
 
         cards = cursor.fetchall()
 
-        # Create Card instances for each card
-        card_objects = []
-        for card in cards:
-            card_name = card[1]
-            card_level = int(card[3]) if card[3] is not None else None
-            card_type = card[12]
-            card_object = Card(card_name, card_level, card_type)
-            card_objects.append(card_object)
+        # Convert the tuples into Card objects
+        cards = [Card(card[1], int(card[3]), card[12], int(card[7]), int(card[8])) for card in cards]
 
-        return card_objects
+        return cards
 
     def shuffle(self):
         random.shuffle(self.cards)

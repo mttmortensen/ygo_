@@ -1,8 +1,10 @@
 class Card:
-    def __init__(self, name, level, card_type):
+    def __init__(self, name, level, card_type, atk, defense):
         self.name = name
         self.level = level
         self.card_type = card_type
+        self.atk = atk
+        self.defense = defense
         self.position = None  # 'attack', 'defense', or 'set'
         self.summon_requirement = 0 if level <= 4 else 1 if level <= 6 else 2
 
