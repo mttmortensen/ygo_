@@ -66,10 +66,11 @@ class Player:
 
         # Ask the player to choose a card to summon
         print(f"{self.name}, choose a card to summon:")
-        for i, card in enumerate(self.hand):
-            print(f"{i}: {card.name}")
+        normal_summonable_cards = [card for card in self.hand if card.level <= 4]
+        for i, card in enumerate(normal_summonable_cards):
+            print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
         card_index = int(input("Enter the number of the card: "))
-        card = self.hand[card_index]
+        card = normal_summonable_cards[card_index]
 
         # If the player chose to perform a Tribute Summon
         if summon_type.lower() == "tribute":
@@ -83,7 +84,8 @@ class Player:
             for _ in range(card.summon_requirement):
                 print(f"{self.name}, choose a monster to tribute:")
                 for i, monster in enumerate(monsters_on_field):
-                    print(f"{i}: {monster.name}")
+                    print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
+
                 monster_index = int(input("Enter the number of the monster: "))
                 monster = monsters_on_field.pop(monster_index)
                 self.field.zones["main_monster_zones"].remove(monster)
