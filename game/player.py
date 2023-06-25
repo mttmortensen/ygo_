@@ -12,6 +12,16 @@ class Player:
         self.has_normal_summoned = False
         self.can_summon = True
 
+    def get_state(self):
+        state = {
+            "name": self.name,
+            "hand": [card.get_state() for card in self.hand],
+            "deck_size": len(self.deck.cards),
+            "has_normal_summoned": self.has_normal_summoned,
+            "can_summon": self.can_summon,
+        }
+        return state
+
     def draw(self):
         if self.deck.cards:  # Check if the deck is not empty
             card = self.deck.draw_card()

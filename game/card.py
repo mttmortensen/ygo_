@@ -7,6 +7,17 @@ class Card:
         self.defense = defense
         self.position = None  # 'attack', 'defense', or 'set'
         self.summon_requirement = 0 if level <= 4 else 1 if level <= 6 else 2
+
+        def get_state(self):
+            state = {
+                "name": self.name,
+                "level": self.level,
+                "type": self.card_type,
+                "position": self.position,
+                "atk": self.atk,
+                "def": self.defense,
+            }
+            return state
     
     def __str__(self):
         return f"{self.name}, ATK: {self.atk}, DEF: {self.defense}, Level: {self.level}"

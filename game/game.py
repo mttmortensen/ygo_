@@ -9,6 +9,14 @@ class Game:
         self.deck = Deck()
         self.deck.shuffle()
 
+    def get_state(self):
+        state = {
+            "phase": self.current_phase,
+            "players": [player.get_state() for player in self.players],
+            "field": self.field.get_state(),
+        }
+        return state
+
     def start(self):
         # Each player draws 5 cards
         print("Begin the duel...")
