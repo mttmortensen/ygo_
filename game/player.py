@@ -81,7 +81,7 @@ class Player:
         self.hand.remove(card)
 
         # Ask the player to choose a position for the monster
-        position = input("Enter the position for the monster ('attack', 'defense', or 'set'): ")
+        position = input("Enter the battle position for the monster ('attack' or 'set'): ")
         card.set_position(position)
 
         # Ask the player to choose a zone for the monster
@@ -91,6 +91,7 @@ class Player:
 
         self.has_normal_summoned = True
         self.can_summon = False
+
     
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
