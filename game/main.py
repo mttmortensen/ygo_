@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from player import Player
 from game import Game
 
@@ -8,6 +8,11 @@ app = Flask(__name__)
 player1 = Player("Player 1")
 player2 = Player("Player 2")
 game = Game(player1, player2)
+
+# Front-End Routes
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/game_state', methods=['GET'])
 def game_state():
@@ -26,5 +31,3 @@ def perform_action():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-game.start()

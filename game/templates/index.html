@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Yu-Gi-Oh! Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Yu-Gi-Oh! Game</h1>
+
+    <pre id="game-state"></pre>
+
+    <button id="update-button">Update Game State</button>
+
+    <script>
+        function updateGameState() {
+            $.getJSON('/game_state', function(state) {
+                $('#game-state').text(JSON.stringify(state, null, 2));
+            });
+        }
+
+        $('#update-button').on('click', function() {
+            updateGameState();
+        });
+
+        setInterval(updateGameState, 1000);
+    </script>
+</body>
+</html>
