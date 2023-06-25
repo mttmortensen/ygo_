@@ -1,4 +1,5 @@
 from deck import Deck
+from field import Field
 import random
 
 class Player:
@@ -6,6 +7,7 @@ class Player:
         self.name = name
         self.hand = []
         self.deck = Deck()
+        self.field = Field()
         self.graveyard = []
 
     def draw(self):
@@ -26,6 +28,7 @@ class Player:
         self.hand.remove(card)  # Remove the card from the hand
         self.graveyard.append(card)  # Add the card to the graveyard
         print(f"{self.name} discarded {card} to the graveyard.")
+        self.field.zones["graveyard"] = card  # Add the card to the player's graveyard zone on the field
 
     def show_hand(self):
         print(f"{self.name}'s hand: {self.hand}")

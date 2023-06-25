@@ -3,6 +3,8 @@ from deck import Deck
 class Game:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
+        self.deck = Deck()
+        self.deck.shuffle()
 
     def start(self):
         # Each player draws 5 cards
