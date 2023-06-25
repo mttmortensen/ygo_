@@ -49,8 +49,6 @@ class Player:
     def show_hand(self):
         print(f"{self.name}'s hand: {self.hand}")
         print(f"{self.name} hand size is: {len(self.hand)}")
-        print(f"{self.name} deck size is: {len(self.deck.cards)}")
-        print(f"{self.name} graveyard size is: {len(self.graveyard)}")
 
     def choose_card_to_summon(self):
         while True:
@@ -99,10 +97,8 @@ class Player:
         card.set_position(position)
 
         # Ask the player to choose a zone for the monster
-        print("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):")
-        zone_index = int(get_user_input())
+        zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):"))
         self.field.place_card(self.name, "main_monster_zones", card, zone_index)
-
         self.has_normal_summoned = True
         self.can_summon = False
 

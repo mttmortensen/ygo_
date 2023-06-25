@@ -1,6 +1,6 @@
 from deck import Deck
 from field import Field
-from game_utils import get_user_input
+from game_utils import get_user_input, print_game_state
 
 class Game:
     def __init__(self, player1, player2):
@@ -30,8 +30,6 @@ class Game:
                 player.has_normal_summoned = False  # Reset the normal summon status
                 player.can_summon = True
                 print(f"\nIt's {player.name}'s turn.")
-                self.current_phase = "Standby Phase"  # Update current_phase
-                player.standby_phase()
                 if player.deck.cards:  # Only execute the Draw Phase if the deck is not empty
                     self.current_phase = "Draw Phase"  # Update current_phase                  
                     player.draw_phase()
@@ -40,17 +38,17 @@ class Game:
                 else:
                     print(f"{player.name}'s deck is empty. The game is over.")
                     return
-                print(f"{player.name} is in Main Phase 1.")
+                self.current_phase = "Standby Phase"  # Update current_phase
+                player.standby_phase()
                 self.current_phase = "Main Phase 1"  # Update current_phase
                 player.main_phase_1()
                 if player.can_summon:
                     summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ")
                     if summon_choice.lower() == 'yes':
+                        print_game_state(self)
                         player.summon()
-                print(f"{player.name} is in the Battle Phase.")
                 self.current_phase = "Battle Phase"  # Update current_phase
                 player.battle_phase()
-                print(f"{player.name} is in Main Phase 2.")
                 self.current_phase = "Main Phase 2"  # Update current_phase
                 player.main_phase_2()
                 if player.can_summon:
