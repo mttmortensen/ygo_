@@ -13,10 +13,12 @@ class Player:
         self.can_summon = True
 
     def get_state(self):
+        for card in self.hand:
+            print(f"Card: {card}, Type: {type(card)}")
         state = {
             "name": self.name,
             "hand": [card.get_state() for card in self.hand],
-            "field": self.field.get_state(),  # Add this line
+            "field": self.field.get_state(),
             "deck_size": len(self.deck.cards),
             "has_normal_summoned": self.has_normal_summoned,
             "can_summon": self.can_summon,

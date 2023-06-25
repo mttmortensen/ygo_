@@ -37,6 +37,14 @@ def perform_action():
     game.perform_action(data['action'])
     return jsonify(success=True)
 
+@app.route('/summon', methods=['POST'])
+def summon():
+    data = request.get_json()
+    player = game.players[data['player']]
+    card = player.hand[data['card']]
+    player.summon(card)
+    return jsonify(game.get_state())
+
 # Error handling
 @app.errorhandler(500)
 def handle_internal_server_error(e):
