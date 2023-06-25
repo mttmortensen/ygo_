@@ -7,7 +7,12 @@ class Card:
         self.defense = defense
         self.position = None  # 'attack', 'defense', or 'set'
         self.summon_requirement = 0 if level <= 4 else 1 if level <= 6 else 2
+    
+    def __str__(self):
+        return f"{self.name}, ATK: {self.atk}, DEF: {self.defense}, Level: {self.level}"
 
+    __repr__ = __str__
+    
     def set_position(self, position):
         if position in ['attack', 'defense', 'set']:
             self.position = position
