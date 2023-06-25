@@ -1,16 +1,7 @@
 class Field:
-    def __init__(self):
-        # Zones have to be defined for both players first
+    def __init__(self, player_name):
         self.zones = {
-            "player1": {
-                "main_monster_zones": [None, None, None, None, None],
-                "spell_trap_zones": [None, None, None, None, None],
-                "field_zone": None,
-                "deck_zone": None,
-                "extra_deck_zone": None,
-                "graveyard": None,
-            },
-            "player2": {
+            player_name: {
                 "main_monster_zones": [None, None, None, None, None],
                 "spell_trap_zones": [None, None, None, None, None],
                 "field_zone": None,

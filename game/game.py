@@ -1,8 +1,11 @@
 from deck import Deck
+from field import Field
 
 class Game:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
+        player1.field = Field(player1.name)
+        player2.field = Field(player2.name)
         self.deck = Deck()
         self.deck.shuffle()
 

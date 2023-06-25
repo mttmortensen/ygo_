@@ -7,8 +7,9 @@ class Player:
         self.name = name
         self.hand = []
         self.deck = Deck()
-        self.field = Field()
         self.graveyard = []
+        self.has_normal_summoned = False
+        self.can_summon = True
 
     def draw(self):
         if self.deck.cards:  # Check if the deck is not empty
@@ -37,17 +38,16 @@ class Player:
         print(f"{self.name} graveyard size is: {len(self.graveyard)}")
 
     def choose_card_to_summon(self):
-        print(f"{self.name}, choose a card to summon:")
-        for card in self.hand:
-            print(f"{card[1]}")  # Print the name of the card
+        while True:
+            print("Choose a monster to summon:")
+            for i, card in enumerate(self.hand):
+                print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
+            card_index = input("Enter the number of the card: ")
+            if card_index.isdigit() and int(card_index) in range(len(self.hand)):
+                return self.hand[int(card_index)]
+            else:
+                print("Invalid input. Please enter a valid number.")
 
-        while True:  # Keep asking until a valid input is given
-            choice = input("Enter the name of the card: ")
-            for card in self.hand:
-                if choice.lower() in card[1].lower():  # Check if the input is in the card name
-                    return card
-
-            print("Invalid input, please try again.")
     
     def summon(self):
         if not self.has_normal_summoned:
@@ -108,7 +108,7 @@ class Player:
 
         self.has_normal_summoned = True
         card = self.choose_card_to_summon()
-        self.field.place_card("player1", "main_monster_zones", card)
+        self.field.place_card(self.name, "main_monster_zones", card)
         self.can_summon = False
 
     
