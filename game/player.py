@@ -180,6 +180,12 @@ class Player:
                         # Direct attack
                         print(f"{attacking_card.name} attacks {opponent.name}'s life points directly.")
                         opponent.life_points -= attacking_card.atk
+                        # Check if opponent's life points have reached 0 or less
+                        if opponent.life_points <= 0:
+                            print(f"{opponent.name}'s life points have reached 0.")
+                            print(f"{self.name} is the winner!")
+                            game.end_game()  # Assuming you have a method to end the game
+                            return
                         print(f"{opponent.name} loses {attacking_card.atk} life points.")
                         attacking_card.has_attacked = True
                     else:
@@ -204,6 +210,12 @@ class Player:
                                 opponent.graveyard.append(defending_card)
                                 opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
                                 opponent.life_points -= attacking_card.atk - defending_card.atk  # Subtracting life points
+                            # Check if opponent's life points have reached 0 or less
+                            if opponent.life_points <= 0:
+                                print(f"{opponent.name}'s life points have reached 0.")
+                                print(f"{self.name} is the winner!")
+                                game.end_game()  # Assuming you have a method to end the game
+                                return
                                 print(f"{opponent.name} loses {attacking_card.atk - defending_card.atk} life points.")
                             elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
                                 print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
@@ -220,9 +232,26 @@ class Player:
                                 self.graveyard.append(attacking_card)
                                 self.field.zones[self.name]["main_monster_zones"][card_index] = None
                                 self.life_points -= defending_card.atk - attacking_card.atk  # Subtracting life points
+                                # Check if opponent's life points have reached 0 or less
+                                if opponent.life_points <= 0:
+                                    print(f"{opponent.name}'s life points have reached 0.")
+                                    print(f"{self.name} is the winner!")
+                                    game.end_game()  # Assuming you have a method to end the game
+                                    return
+                                elif self.life_points <= 0:
+                                    print(f"{self.name}'s life points have reached 0.")
+                                    print(f"{opponent.name} is the winner!")
+                                    game.end_game()  # Assuming you have a method to end the game
+                                    return
                                 print(f"{self.name} loses {defending_card.atk - attacking_card.atk} life points.")
                             elif attacking_card.atk < defending_card.defense and defending_card.position == "defense":
                                 self.life_points -= defending_card.defense - attacking_card.atk  # Subtracting life points
+                                # Check if opponent's life points have reached 0 or less
+                                if opponent.life_points <= 0:
+                                    print(f"{opponent.name}'s life points have reached 0.")
+                                    print(f"{self.name} is the winner!")
+                                    game.end_game()  # Assuming you have a method to end the game
+                                    return
                                 print(f"{self.name} loses {defending_card.defense - attacking_card.atk} life points.")
 
                             print(f"{self.name}'s life points: {self.life_points}")
