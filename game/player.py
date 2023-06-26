@@ -66,23 +66,24 @@ class Player:
         if self.has_normal_summoned:
             print("You have already performed a Normal Summon this turn.")
             return
+        while True:  # Adding a loop to keep asking until a valid summon is performed or the player chooses not to summon
+            summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
+            summonable_monsters = self.filter_summonable_monsters(summon_type)
 
-        summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
-        summonable_monsters = self.filter_summonable_monsters(summon_type)
+            if summon_type.lower() == 'tribute':
+                card = self.perform_tribute_summon(summonable_monsters)
+            else:
+                card = self.perform_normal_summon(summonable_monsters)
 
-        if summon_type.lower() == 'tribute':
-            card = self.perform_tribute_summon(summonable_monsters)
-        else:
-            card = self.perform_normal_summon(summonable_monsters)
-
-        if card is not None:
-            self.hand.remove(card)
-            position = get_user_input("Enter the battle position for the monster ('attack' or 'set'): ")
-            card.set_position(position)
-            zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):"))
-            self.field.place_card(self.name, "main_monster_zones", card, zone_index)
-            self.has_normal_summoned = True
-            self.can_summon = False
+            if card is not None:
+                self.hand.remove(card)
+                position = get_user_input("Enter the battle position for the monster ('attack' or 'set'): ")
+                card.set_position(position)
+                zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):"))
+                self.field.place_card(self.name, "main_monster_zones", card, zone_index)
+                self.has_normal_summoned = True
+                self.can_summon = False
+                break
 
     def filter_summonable_monsters(self, summon_type):
         if summon_type == "normal":
