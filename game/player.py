@@ -191,6 +191,10 @@ class Player:
                             print(f"{defending_card.name} is destroyed by battle.")
                             opponent.graveyard.append(defending_card)
                             opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
+                        elif attacking_card.atk < defending_card.atk and defending_card.position == "attack":
+                            print(f"{attacking_card.name} is destoryed by battle and sent to the {self.name}'s Graveyard")
+                            self.graveyard.append(attacking_card)
+                            self.field.zones[self.name]["main_monster_zones"][card_index] = None
 
                         print("Damage Step ends.")
 
