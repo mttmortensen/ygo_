@@ -1,5 +1,5 @@
 from field import Field
-from game_commands import get_user_input, print_game_state
+from game_commands import get_user_input, check_field
 
 class Game:
     def __init__(self, player1, player2):
@@ -49,7 +49,7 @@ class Game:
                 if player.can_summon:
                     summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
                     if summon_choice.lower() == 'yes':
-                        print_game_state(self)
+                        check_field(self)
                         player.summon(self)
                 self.current_phase = "Battle Phase"  # Update current_phase
                 player.battle_phase(opponent, self.turn, self)  # Pass the opponent player as an argument
