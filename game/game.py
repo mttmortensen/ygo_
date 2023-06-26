@@ -60,4 +60,8 @@ class Game:
                 self.current_phase = "End Phase"  # Update current_phase
                 player.end_phase()
                 self.turn += 1  # Increment the turn count at the end of each player's turn
+            for player in self.players: # Reseting monsters that have attacked  for this turn
+                for zone in player.field.zones[player.name]["main_monster_zones"]:
+                    if zone is not None:
+                        zone.has_attacked = False
 

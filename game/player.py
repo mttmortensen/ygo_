@@ -163,8 +163,8 @@ class Player:
                 if len(self.field.zones[self.name]["main_monster_zones"]) > 0:
                     print(f"{self.name}, choose a monster to attack with:")
                     for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
-                        if zone is not None:
-                            print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")  # Corrected here
+                        if zone is not None and not zone.has_attacked:
+                            print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
                     card_index = int(get_user_input("Enter the number of the card: "))
                     attacking_card = self.field.zones[self.name]["main_monster_zones"][card_index]
 
@@ -177,7 +177,7 @@ class Player:
                         defending_card = opponent.field.zones[opponent.name]["main_monster_zones"][card_index]
 
                         print(f"{attacking_card.name} attacks {defending_card.name}.")
-
+                        attacking_card.has_attacked = True
                         # Damage Step
                         print("Damage Step begins.")
                         if defending_card.position == "set":
