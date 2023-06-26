@@ -148,15 +148,16 @@ class Player:
         print(f"{self.name} is in Main Phase 1.")
         self.can_summon = True
 
-    def battle_phase(self, opponent):
+    def battle_phase(self, opponent, current_turn):
         print(f"{self.name} is in the Battle Phase.")
         print("Start Step begins.")
         print("Battle Step begins.")
         action = get_user_input("Do you want to attack with a monster or end your Battle Phase? (attack/end): ")
         if action.lower() == "attack":
-            if not self.field.has_monsters(self.name):
-                return print("You cannot attack, there are no monsters on the other side of the field.")
-        
+            if current_turn == 0:  # Check if it's the first turn of the duel
+                print("You cannot attack on the first turn of the duel.")
+                print("End Step begins.")
+                return
             while True:  # Add a loop to allow multiple battles
                 if len(self.field.zones[self.name]["main_monster_zones"]) > 0:
                     print(f"{self.name}, choose a monster to attack with:")
@@ -194,7 +195,10 @@ class Player:
                         print("Damage Step ends.")
 
                 continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ")
-                if continue_battle.lower() != "yes":
+                if continue_battle.lower() != "yes":  
+                    # End Step
+                    print("End Step begins.")
+                    print(f"{self.name}'s Battle Phase ends.")
                     break
         elif action.lower() == "end":
             # End Step

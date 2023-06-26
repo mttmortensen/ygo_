@@ -50,7 +50,7 @@ class Game:
                         print_game_state(self)
                         player.summon()
                 self.current_phase = "Battle Phase"  # Update current_phase
-                player.battle_phase(opponent)  # Pass the opponent player as an argument
+                player.battle_phase(opponent, self.turn)  # Pass the opponent player as an argument
                 self.current_phase = "Main Phase 2"  # Update current_phase
                 player.main_phase_2()
                 if player.can_summon:
@@ -59,3 +59,5 @@ class Game:
                         player.summon()
                 self.current_phase = "End Phase"  # Update current_phase
                 player.end_phase()
+                self.turn += 1  # Increment the turn count at the end of each player's turn
+
