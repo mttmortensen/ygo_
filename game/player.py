@@ -1,6 +1,6 @@
 from deck import Deck
 from field import Field
-from game_utils import get_user_input
+from game_commands import get_user_input
 import random
 
 class Player:
@@ -52,12 +52,12 @@ class Player:
         print(f"{self.name}'s hand: {self.hand}")
         print(f"{self.name} hand size is: {len(self.hand)}")
 
-    def choose_card_to_summon(self):
+    def choose_card_to_summon(self, game):
         while True:
             print("Choose a monster to summon:")
             for i, card in enumerate(self.hand):
                 print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-            card_index = get_user_input("Enter the number of the card: ")
+            card_index = get_user_input("Enter the number of the card: ", game)
             if card_index.isdigit() and int(card_index) in range(len(self.hand)):
                 return self.hand[int(card_index)]
             else:
@@ -72,15 +72,15 @@ class Player:
             summonable_monsters = self.filter_summonable_monsters(summon_type)
 
             if summon_type.lower() == 'tribute':
-                card = self.perform_tribute_summon(summonable_monsters)
+                card = self.perform_tribute_summon(summonable_monsters, game)
             else:
-                card = self.perform_normal_summon(summonable_monsters)
+                card = self.perform_normal_summon(summonable_monsters, game)
 
             if card is not None:
                 self.hand.remove(card)
-                position = get_user_input("Enter the battle position for the monster ('attack' or 'set'): ")
+                position = get_user_input("Enter the battle position for the monster ('attack' or 'set'): ", game)
                 card.set_position(position)
-                zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):"))
+                zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):", game))
                 self.field.place_card(self.name, "main_monster_zones", card, zone_index)
                 self.has_normal_summoned = True
                 self.can_summon = False
@@ -92,7 +92,7 @@ class Player:
         elif summon_type == "tribute":
             return [card for card in self.hand if card.level > 4 and len([zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]) >= card.summon_requirement]
     
-    def perform_tribute_summon(self, summonable_monsters):
+    def perform_tribute_summon(self, summonable_monsters, game):
         # Check if the player has a monster in their hand that requires a tribute
         if all(card.level <= 4 for card in self.hand):
             print(f"{self.name}, you do not have any monsters in your hand to tribute.")
@@ -108,7 +108,7 @@ class Player:
         print(f"{self.name}, choose a monster to tribute summon:")
         for i, card in enumerate(summonable_monsters):  # Use summonable_monsters here
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-        card_index = int(get_user_input("Enter the number of the card: "))
+        card_index = int(get_user_input("Enter the number of the card: ", game))
         card = summonable_monsters[card_index]  # Update the card variable
 
         # Ask the player to choose which monsters to tribute
@@ -117,7 +117,7 @@ class Player:
             print(f"{self.name}, choose a monster to tribute:")
             for i, monster in enumerate(monsters_on_field):
                 print(f"{i}: {monster.name}")
-            monster_index = int(get_user_input("Enter the number of the monster: "))
+            monster_index = int(get_user_input("Enter the number of the monster: ", game))
             monster = monsters_on_field.pop(monster_index)
             tribute_monsters.append(monster)
             self.field.zones[self.name]["main_monster_zones"].remove(monster)
@@ -129,12 +129,12 @@ class Player:
 
         return card
 
-    def perform_normal_summon(self, summonable_monsters):
+    def perform_normal_summon(self, summonable_monsters, game):
         # If the player wants to perform a normal summon, ask them to choose a card to summon
         print(f"{self.name}, choose a card to summon:")
         for i, card in enumerate(summonable_monsters):
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-        card_index = int(get_user_input("Enter the number of the card: "))
+        card_index = int(get_user_input("Enter the number of the card: ", game))
         card = summonable_monsters[card_index]  # Update the card variable
 
         return card
@@ -171,7 +171,7 @@ class Player:
                     for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
                         if zone is not None and not zone.has_attacked:
                             print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
-                    card_index = int(get_user_input("Enter the number of the card: "))
+                    card_index = int(get_user_input("Enter the number of the card: ", game))
                     attacking_card = self.field.zones[self.name]["main_monster_zones"][card_index]
 
                     # Check if there are any monsters on the opponent's field
@@ -188,7 +188,7 @@ class Player:
                             for i, zone in enumerate(opponent.field.zones[opponent.name]["main_monster_zones"]):
                                 if zone is not None:
                                     print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")  # Corrected here
-                            card_index = int(get_user_input("Enter the number of the card: "))
+                            card_index = int(get_user_input("Enter the number of the card: ", game))
                             defending_card = opponent.field.zones[opponent.name]["main_monster_zones"][card_index]
 
                             print(f"{attacking_card.name} attacks {defending_card.name}.")
