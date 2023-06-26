@@ -4,11 +4,11 @@ from card import Card
 from config import get_db_config  # Importing the function
 
 class Deck:
-    def __init__(self, player_name):
-        self.cards = self.load_cards_from_db(player_name)
+    def __init__(self):
+        self.cards = self.load_cards_from_db()
         self.shuffle()
 
-    def load_cards_from_db(self, player_name):
+    def load_cards_from_db(self):
         # Connect to your MySQL database and fetch the normal monster cards
         db_config = get_db_config()
         db = mysql.connector.connect(
