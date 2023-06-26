@@ -11,8 +11,6 @@ def get_user_input(prompt, game=None):
             check_field(game)
         elif user_input.lower() == 'check-graveyard' and game is not None:
             check_graveyard(game)
-        elif user_input.lower() == "checkout-duel-log":
-            checkout_duel_log(game)
         else:
             return user_input
 
@@ -37,6 +35,3 @@ def check_graveyard(game):
         else:
             for card in player.graveyard:
                 print(card)
-
-def checkout_duel_log(game):
-    print("The duel log has been saved to duel_log.txt.")
