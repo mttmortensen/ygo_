@@ -188,6 +188,13 @@ class Player:
                             print(f"{defending_card.name} is destroyed by battle.")
                             opponent.graveyard.append(defending_card)
                             opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
+                            opponent.life_points -= attacking_card.atk - defending_card.atk  # Subtracting life points
+                        elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
+                            print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
+                            opponent.graveyard.append(defending_card)
+                            opponent.field.zone[opponent.name]["main_monster_zones"][card_index] = None
+                            self.graveyard.append(attacking_card)
+                            self.field.zones[self.name]["main_monster_zone"][card_index] = None
                         elif attacking_card.atk > defending_card.defense and defending_card.position == "defense":
                             print(f"{defending_card.name} is destroyed by battle.")
                             opponent.graveyard.append(defending_card)
@@ -196,6 +203,9 @@ class Player:
                             print(f"{attacking_card.name} is destoryed by battle and sent to the {self.name}'s Graveyard")
                             self.graveyard.append(attacking_card)
                             self.field.zones[self.name]["main_monster_zones"][card_index] = None
+                            self.life_points -= defending_card.atk - attacking_card.atk  # Subtracting life points
+                        elif attacking_card.atk < defending_card.defense and defending_card.position == "defense":
+                            self.life_points -= defending_card.defense - attacking_card.atk  # Subtracting life points
 
                         print("Damage Step ends.")
 
