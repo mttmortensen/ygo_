@@ -26,7 +26,9 @@ class Game:
 
         # Game continues until a player's deck is empty
         while True:
-            for player in self.players:
+            for i in range(2):  # Use range(2) instead of self.players
+                player = self.players[i]
+                opponent = self.players[1 - i]  # Get the opponent player
                 player.has_normal_summoned = False  # Reset the normal summon status
                 player.can_summon = True
                 print(f"\nIt's {player.name}'s turn.")
@@ -48,7 +50,7 @@ class Game:
                         print_game_state(self)
                         player.summon()
                 self.current_phase = "Battle Phase"  # Update current_phase
-                player.battle_phase()
+                player.battle_phase(opponent)  # Pass the opponent player as an argument
                 self.current_phase = "Main Phase 2"  # Update current_phase
                 player.main_phase_2()
                 if player.can_summon:
