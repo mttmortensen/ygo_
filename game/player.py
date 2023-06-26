@@ -70,45 +70,25 @@ class Player:
          # Ask the player if they want to perform a normal summon or a tribute summon
         summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
 
+        # If the player wants to perform a tribute summon, check if they have a valid monster to tribute
+        if summon_type.lower() == 'tribute':
+            # Check if the player has a monster in their hand that requires a tribute
+            if all(card.level <= 4 for card in self.hand):
+                print(f"{self.name}, you do not have any monsters in your hand to tribute.")
+                return self.summon()  # Ask the player again if they want to perform a normal summon or a tribute summon
+
+            # Check if the player has enough monsters on the field to tribute
+            monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]
+            if len(monsters_on_field) < 1:  # Change this to the actual tribute requirement of the monster
+                print(f"{self.name}, you do not have any monsters on your field to tribute.")
+                return self.summon()  # Ask the player again if they want to perform a normal summon or a tribute summon
+
         # Ask the player to choose a card to summon
         print(f"{self.name}, choose a card to summon:")
         for i, card in enumerate(self.hand):
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
         card_index = int(get_user_input("Enter the number of the card: "))
         card = self.hand[card_index]
-
-        if summon_type.lower() == 'tribute':
-            # Check if the player has a monster in their hand that requires a tribute
-            if all(card.level < 4 for card in self.hand):
-                print("You don't have any monsters in your hand that require a tribute.")
-                summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
-                if summon_type.lower() != 'tribute':
-                    return self.summon()
-
-            # If the player still wants to perform a tribute summon, ask them to choose a monster that requires a tribute
-            if summon_type.lower() == 'tribute':
-                print(f"{self.name}, choose a monster to tribute summon:")
-                for i, card in enumerate(self.hand):
-                    if card.level > 4:  # Only print the monsters that require a tribute
-                        print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-                card_index = int(get_user_input("Enter the number of the card: "))
-                card = self.hand[card_index]  # Update the card variable
-
-            # Check if the player has enough monsters to tribute
-            monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]
-            if len(monsters_on_field) < card.summon_requirement:
-                print("Not enough monsters on the field to tribute.")
-                return
-
-            # Ask the player to choose which monsters to tribute
-            for _ in range(card.summon_requirement):
-                print(f"{self.name}, choose a monster to tribute:")
-                for i, monster in enumerate(monsters_on_field):
-                    print(f"{i}: {monster.name}")
-                monster_index = int(get_user_input("Enter the number of the monster: "))
-                monster = monsters_on_field.pop(monster_index)
-                self.field.zones["main_monster_zones"].remove(monster)
-                self.graveyard.append(monster)
 
         # Remove the card from the player's hand
         self.hand.remove(card)
