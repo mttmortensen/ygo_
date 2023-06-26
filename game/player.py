@@ -164,7 +164,7 @@ class Player:
                     print(f"{self.name}, choose a monster to attack with:")
                     for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
                         if zone is not None:
-                            print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}")  # Corrected here
+                            print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")  # Corrected here
                     card_index = int(get_user_input("Enter the number of the card: "))
                     attacking_card = self.field.zones[self.name]["main_monster_zones"][card_index]
 
@@ -172,7 +172,7 @@ class Player:
                         print(f"{self.name}, choose a monster to attack:")
                         for i, zone in enumerate(opponent.field.zones[opponent.name]["main_monster_zones"]):
                             if zone is not None:
-                                print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}")  # Corrected here
+                                print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")  # Corrected here
                         card_index = int(get_user_input("Enter the number of the card: "))
                         defending_card = opponent.field.zones[opponent.name]["main_monster_zones"][card_index]
 
@@ -189,12 +189,13 @@ class Player:
                             opponent.graveyard.append(defending_card)
                             opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
                             opponent.life_points -= attacking_card.atk - defending_card.atk  # Subtracting life points
+                            print(f"{opponent.name} loses {attacking_card.atk - defending_card.atk} life points.")
                         elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
                             print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
                             opponent.graveyard.append(defending_card)
-                            opponent.field.zone[opponent.name]["main_monster_zones"][card_index] = None
+                            opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
                             self.graveyard.append(attacking_card)
-                            self.field.zones[self.name]["main_monster_zone"][card_index] = None
+                            self.field.zones[self.name]["main_monster_zones"][card_index] = None
                         elif attacking_card.atk > defending_card.defense and defending_card.position == "defense":
                             print(f"{defending_card.name} is destroyed by battle.")
                             opponent.graveyard.append(defending_card)
@@ -204,9 +205,13 @@ class Player:
                             self.graveyard.append(attacking_card)
                             self.field.zones[self.name]["main_monster_zones"][card_index] = None
                             self.life_points -= defending_card.atk - attacking_card.atk  # Subtracting life points
+                            print(f"{self.name} loses {defending_card.atk - attacking_card.atk} life points.")
                         elif attacking_card.atk < defending_card.defense and defending_card.position == "defense":
                             self.life_points -= defending_card.defense - attacking_card.atk  # Subtracting life points
+                            print(f"{self.name} loses {defending_card.defense - attacking_card.atk} life points.")
 
+                        print(f"{self.name}'s life points: {self.life_points}")
+                        print(f"{opponent.name}'s life points: {opponent.life_points}")
                         print("Damage Step ends.")
 
                 continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ", game)
