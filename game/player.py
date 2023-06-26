@@ -62,12 +62,12 @@ class Player:
             else:
                 print("Invalid get_user_input. Please enter a valid number.")
     
-    def summon(self):
+    def summon(self, game):
         if self.has_normal_summoned:
             print("You have already performed a Normal Summon this turn.")
             return
         while True:  # Adding a loop to keep asking until a valid summon is performed or the player chooses not to summon
-            summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
+            summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ", game)
             summonable_monsters = self.filter_summonable_monsters(summon_type)
 
             if summon_type.lower() == 'tribute':
@@ -148,11 +148,11 @@ class Player:
         print(f"{self.name} is in Main Phase 1.")
         self.can_summon = True
 
-    def battle_phase(self, opponent, current_turn):
+    def battle_phase(self, opponent, current_turn, game):
         print(f"{self.name} is in the Battle Phase.")
         print("Start Step begins.")
         print("Battle Step begins.")
-        action = get_user_input("Do you want to attack with a monster or end your Battle Phase? (attack/end): ")
+        action = get_user_input("Do you want to attack with a monster or end your Battle Phase? (attack/end): ", game)
         if action.lower() == "attack":
             if current_turn == 0:  # Check if it's the first turn of the duel
                 print("You cannot attack on the first turn of the duel.")
@@ -198,7 +198,7 @@ class Player:
 
                         print("Damage Step ends.")
 
-                continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ")
+                continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ", game)
                 if continue_battle.lower() != "yes":  
                     # End Step
                     print("End Step begins.")

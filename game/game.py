@@ -45,18 +45,18 @@ class Game:
                 self.current_phase = "Main Phase 1"  # Update current_phase
                 player.main_phase_1()
                 if player.can_summon:
-                    summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ")
+                    summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
                     if summon_choice.lower() == 'yes':
                         print_game_state(self)
-                        player.summon()
+                        player.summon(self)
                 self.current_phase = "Battle Phase"  # Update current_phase
-                player.battle_phase(opponent, self.turn)  # Pass the opponent player as an argument
+                player.battle_phase(opponent, self.turn, self)  # Pass the opponent player as an argument
                 self.current_phase = "Main Phase 2"  # Update current_phase
                 player.main_phase_2()
                 if player.can_summon:
                     summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ")
                     if summon_choice.lower() == 'yes':
-                        player.summon()
+                        player.summon(self)
                 self.current_phase = "End Phase"  # Update current_phase
                 player.end_phase()
                 self.turn += 1  # Increment the turn count at the end of each player's turn
