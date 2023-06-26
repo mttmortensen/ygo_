@@ -69,6 +69,13 @@ class Player:
         
          # Ask the player if they want to perform a normal summon or a tribute summon
         summon_type = get_user_input("Do you want to perform a normal summon or a tribute summon? (normal/tribute): ")
+        
+        if summon_type == "normal":
+        # Filter out high-level monsters
+            summonable_monsters = [card for card in self.hand if card.level <= 4]
+        elif summon_type == "tribute":
+        # Include all monsters for tribute summon
+            summonable_monsters = self.hand
 
         # If the player wants to perform a tribute summon, check if they have a valid monster to tribute
         if summon_type.lower() == 'tribute':
@@ -85,11 +92,10 @@ class Player:
 
             # If the player has a valid monster to tribute and enough monsters on the field, ask them to choose a monster to tribute summon
             print(f"{self.name}, choose a monster to tribute summon:")
-            for i, card in enumerate(self.hand):
-                if card.level > 4:  # Only print the monsters that require a tribute
-                    print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
+            for i, card in enumerate(summonable_monsters):  # Use summonable_monsters here
+                print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
             card_index = int(get_user_input("Enter the number of the card: "))
-            card = self.hand[card_index]  # Update the card variable
+            card = summonable_monsters[card_index]  # Update the card variable
 
             # Ask the player to choose which monsters to tribute
             tribute_monsters = []
@@ -110,10 +116,10 @@ class Player:
         else:
             # If the player wants to perform a normal summon, ask them to choose a card to summon
             print(f"{self.name}, choose a card to summon:")
-            for i, card in enumerate(self.hand):
+            for i, card in enumerate(summonable_monsters):
                 print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
             card_index = int(get_user_input("Enter the number of the card: "))
-            card = self.hand[card_index]  # Update the card variable
+            card = summonable_monsters[card_index]  # Update the card variable
 
         # Remove the card from the player's hand
         self.hand.remove(card)
