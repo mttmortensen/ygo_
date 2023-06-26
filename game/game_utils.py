@@ -14,6 +14,7 @@ def get_user_input(prompt, game=None):
 
 def print_game_state(game):
     for player in game.players:
+        print(f"{player.name}'s Life Points are: {player.life_points}")
         print(f"{player.name}'s deck size is: {len(player.deck.cards)}")
         print(f"{player.name}'s graveyard size is: {len(player.graveyard)}")
         print(f"{player.name}'s field:")
