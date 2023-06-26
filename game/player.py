@@ -150,55 +150,56 @@ class Player:
 
     def battle_phase(self, opponent):
         print(f"{self.name} is in the Battle Phase.")
-
-        # Start Step
         print("Start Step begins.")
-
-       # Battle Step
         print("Battle Step begins.")
-        while True:  # Add a loop to allow multiple battles
-            if len(self.field.zones[self.name]["main_monster_zones"]) > 0:
-                print(f"{self.name}, choose a monster to attack with:")
-                for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
-                    if zone is not None:
-                        print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}")  # Corrected here
-                card_index = int(get_user_input("Enter the number of the card: "))
-                attacking_card = self.field.zones[self.name]["main_monster_zones"][card_index]
-
-                if len(opponent.field.zones[opponent.name]["main_monster_zones"]) > 0:
-                    print(f"{self.name}, choose a monster to attack:")
-                    for i, zone in enumerate(opponent.field.zones[opponent.name]["main_monster_zones"]):
+        action = get_user_input("Do you want to attack with a monster or end your Battle Phase? (attack/end): ")
+        if action.lower() == "attack":
+            if not self.field.has_monsters(self.name):
+                return print("You cannot attack, there are no monsters on the other side of the field.")
+        
+            while True:  # Add a loop to allow multiple battles
+                if len(self.field.zones[self.name]["main_monster_zones"]) > 0:
+                    print(f"{self.name}, choose a monster to attack with:")
+                    for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
                         if zone is not None:
                             print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}")  # Corrected here
                     card_index = int(get_user_input("Enter the number of the card: "))
-                    defending_card = opponent.field.zones[opponent.name]["main_monster_zones"][card_index]
+                    attacking_card = self.field.zones[self.name]["main_monster_zones"][card_index]
 
-                    print(f"{attacking_card.name} attacks {defending_card.name}.")
+                    if len(opponent.field.zones[opponent.name]["main_monster_zones"]) > 0:
+                        print(f"{self.name}, choose a monster to attack:")
+                        for i, zone in enumerate(opponent.field.zones[opponent.name]["main_monster_zones"]):
+                            if zone is not None:
+                                print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}")  # Corrected here
+                        card_index = int(get_user_input("Enter the number of the card: "))
+                        defending_card = opponent.field.zones[opponent.name]["main_monster_zones"][card_index]
 
-                    # Damage Step
-                    print("Damage Step begins.")
-                    if defending_card.position == "set":
-                        print(f"{defending_card.name} is flipped face-up.")
-                        defending_card.set_position("defense")  # Assume that a flipped monster is in defense position
+                        print(f"{attacking_card.name} attacks {defending_card.name}.")
 
-                    if attacking_card.atk > defending_card.atk and defending_card.position == "attack":
-                        print(f"{defending_card.name} is destroyed by battle.")
-                        opponent.graveyard.append(defending_card)
-                        opponent.field.zones[opponent.name]["main_monster_zones"].remove(defending_card)
-                    elif attacking_card.atk > defending_card.defense and defending_card.position == "defense":
-                        print(f"{defending_card.name} is destroyed by battle.")
-                        opponent.graveyard.append(defending_card)
-                        opponent.field.zones[opponent.name]["main_monster_zones"].remove(defending_card)
+                        # Damage Step
+                        print("Damage Step begins.")
+                        if defending_card.position == "set":
+                            print(f"{defending_card.name} is flipped face-up.")
+                            defending_card.set_position("defense")  # Assume that a flipped monster is in defense position
 
-                    print("Damage Step ends.")
+                        if attacking_card.atk > defending_card.atk and defending_card.position == "attack":
+                            print(f"{defending_card.name} is destroyed by battle.")
+                            opponent.graveyard.append(defending_card)
+                            opponent.field.zones[opponent.name]["main_monster_zones"].remove(defending_card)
+                        elif attacking_card.atk > defending_card.defense and defending_card.position == "defense":
+                            print(f"{defending_card.name} is destroyed by battle.")
+                            opponent.graveyard.append(defending_card)
+                            opponent.field.zones[opponent.name]["main_monster_zones"].remove(defending_card)
 
-            continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ")
-            if continue_battle.lower() != "yes":
-                break
+                        print("Damage Step ends.")
 
-        # End Step
-        print("End Step begins.")
-        print(f"{self.name}'s Battle Phase ends.")
+                continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ")
+                if continue_battle.lower() != "yes":
+                    break
+        elif action.lower() == "end":
+            # End Step
+            print("End Step begins.")
+            print(f"{self.name}'s Battle Phase ends.")
 
     def main_phase_2(self):
         print(f"{self.name} is in Main Phase 2.")

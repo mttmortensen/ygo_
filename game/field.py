@@ -61,3 +61,6 @@ class Field:
                 print("Invalid position or no card in position.")
         else:
             print("Invalid zone type.")
+
+    def has_monsters(self, player_name):
+        return any(zone is not None for zone in self.zones[player_name]["main_monster_zones"])
