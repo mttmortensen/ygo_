@@ -20,7 +20,7 @@ class Deck:
 
         cursor = db.cursor()
 
-        query = "SELECT * FROM all_cards WHERE (frameType = 'normal' OR type = 'NormalMonster') ORDER BY RAND() LIMIT 10"
+        query = "SELECT * FROM all_cards WHERE (frameType = 'normal' OR type = 'NormalMonster') ORDER BY RAND() LIMIT 40"
 
         cursor.execute(query)
 
