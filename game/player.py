@@ -186,11 +186,11 @@ class Player:
                         if attacking_card.atk > defending_card.atk and defending_card.position == "attack":
                             print(f"{defending_card.name} is destroyed by battle.")
                             opponent.graveyard.append(defending_card)
-                            opponent.field.zones[opponent.name]["main_monster_zones"].remove(defending_card)
+                            opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
                         elif attacking_card.atk > defending_card.defense and defending_card.position == "defense":
                             print(f"{defending_card.name} is destroyed by battle.")
                             opponent.graveyard.append(defending_card)
-                            opponent.field.zones[opponent.name]["main_monster_zones"].remove(defending_card)
+                            opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
 
                         print("Damage Step ends.")
 
