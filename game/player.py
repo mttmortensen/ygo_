@@ -83,12 +83,37 @@ class Player:
                 print(f"{self.name}, you do not have any monsters on your field to tribute.")
                 return self.summon()  # Ask the player again if they want to perform a normal summon or a tribute summon
 
-        # Ask the player to choose a card to summon
-        print(f"{self.name}, choose a card to summon:")
-        for i, card in enumerate(self.hand):
-            print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-        card_index = int(get_user_input("Enter the number of the card: "))
-        card = self.hand[card_index]
+            # If the player has a valid monster to tribute and enough monsters on the field, ask them to choose a monster to tribute summon
+            print(f"{self.name}, choose a monster to tribute summon:")
+            for i, card in enumerate(self.hand):
+                if card.level > 4:  # Only print the monsters that require a tribute
+                    print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
+            card_index = int(get_user_input("Enter the number of the card: "))
+            card = self.hand[card_index]  # Update the card variable
+
+            # Ask the player to choose which monsters to tribute
+            tribute_monsters = []
+            for _ in range(card.summon_requirement):
+                print(f"{self.name}, choose a monster to tribute:")
+                for i, monster in enumerate(monsters_on_field):
+                    print(f"{i}: {monster.name}")
+                monster_index = int(get_user_input("Enter the number of the monster: "))
+                monster = monsters_on_field.pop(monster_index)
+                tribute_monsters.append(monster)
+                self.field.zones[self.name]["main_monster_zones"].remove(monster)
+
+            # Send the tribute monsters to the graveyard and print a message
+            for monster in tribute_monsters:
+                self.graveyard.append(monster)
+            print(f"Monster(s) {', '.join(monster.name for monster in tribute_monsters)} have been sent to the graveyard for tribute.")
+
+        else:
+            # If the player wants to perform a normal summon, ask them to choose a card to summon
+            print(f"{self.name}, choose a card to summon:")
+            for i, card in enumerate(self.hand):
+                print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
+            card_index = int(get_user_input("Enter the number of the card: "))
+            card = self.hand[card_index]  # Update the card variable
 
         # Remove the card from the player's hand
         self.hand.remove(card)

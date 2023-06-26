@@ -25,17 +25,21 @@ class Deck:
         query_high_level = "SELECT * FROM all_cards WHERE (frameType = 'normal' OR type = 'NormalMonster') AND level >= 5 LIMIT 1"
         cursor.execute(query_high_level)
         high_level_card = cursor.fetchone()
+        if high_level_card is None:
+            print("No high-level cards found in the database.")
+            return []
+
 
         # Then, select up to 9 other normal monsters of any level
-        query_other_cards = "SELECT * FROM all_cards WHERE frameType = 'normal' OR type = 'NormalMonster' AND name != %s LIMIT 9"
+        query_other_cards = "SELECT * FROM all_cards WHERE (frameType = 'normal' OR type = 'NormalMonster') AND name != %s LIMIT 9"
         cursor.execute(query_other_cards, (high_level_card[1],))
         other_cards = cursor.fetchall()
 
         # Combine the two sets of cards
-        other_cards = [Card(high_level_card[1], int(high_level_card[3]), high_level_card[12], int(high_level_card[7]), int(high_level_card[8]))] + \
+        cards = [Card(high_level_card[1], int(high_level_card[3]), high_level_card[12], int(high_level_card[7]), int(high_level_card[8]))] + \
                       [Card(card[1], int(card[3]), card[12], int(card[7]), int(card[8])) for card in other_cards]
 
-        return other_cards
+        return cards
 
         #cursor = db.cursor()
 
