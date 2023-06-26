@@ -12,6 +12,7 @@ class Player:
         self.field = Field(self.name)
         self.has_normal_summoned = False
         self.can_summon = True
+        self.life_points = 8000
 
     def get_state(self):
         for card in self.hand:
