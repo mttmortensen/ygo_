@@ -1,6 +1,3 @@
-import logging
-
-logging.basicConfig(filename='duel_log.txt', level=logging.INFO, format='%(message)s')
 
 def get_user_input(prompt, game=None):
     while True:
