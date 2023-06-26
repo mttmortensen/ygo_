@@ -8,6 +8,7 @@ class Player:
         self.name = name
         self.hand = []
         self.deck = Deck()
+        print(f"Player deck: {self.deck.cards}")
         self.graveyard = []
         self.field = Field(self.name)
         self.has_normal_summoned = False
