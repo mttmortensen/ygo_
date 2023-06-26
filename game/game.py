@@ -1,14 +1,14 @@
-from deck import Deck
 from field import Field
 from game_utils import get_user_input, print_game_state
 
 class Game:
     def __init__(self, player1, player2):
         self.players = [player1, player2]
+        self.turn = 0
         player1.field = Field(player1.name)
         player2.field = Field(player2.name)
-        self.deck = Deck()
-        self.deck.shuffle()
+        self.players[0].deck.shuffle()
+        self.players[1].deck.shuffle()
         self.current_phase = None
 
     def get_state(self):

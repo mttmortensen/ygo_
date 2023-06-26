@@ -4,11 +4,10 @@ from game_utils import get_user_input
 import random
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, deck):
         self.name = name
         self.hand = []
-        self.deck = Deck()
-        print(f"Player deck: {self.deck.cards}")
+        self.deck = deck
         self.graveyard = []
         self.field = Field(self.name)
         self.has_normal_summoned = False
