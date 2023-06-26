@@ -37,9 +37,11 @@ class Game:
                     player.draw_phase()
                     if len(player.hand) >= 7:  # Check if hand size exceeds 7
                         player.discard()  # Discard a card
-                else:
-                    print(f"{player.name}'s deck is empty. The game is over.")
+                else: # Deck out win condition
+                    print(f"{player.name}'s deck is empty. {opponent.name} wins the game!")
                     return
+                if player.life_points <= 0: # Life Point win condition
+                    print(f"{player.name}'s life points have reached 0. {opponent.name} wins the game! ")
                 self.current_phase = "Standby Phase"  # Update current_phase
                 player.standby_phase()
                 self.current_phase = "Main Phase 1"  # Update current_phase
