@@ -95,9 +95,8 @@ class Player:
     def perform_tribute_summon(self, summonable_monsters, game): 
         # Check if the player has a monster in their hand that requires a tribute 
         if all(card.level <= 4 for card in self.hand): 
-            print(f"{self.name}, you do not have any monsters in your hand to tribute.") 
-            return None
-
+            print(f"{self.name}, you do not have any monsters in your hand that require a tribute.") 
+            return None 
         # Check if the player has enough monsters on the field to tribute 
         monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None] 
 
@@ -107,12 +106,12 @@ class Player:
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}") 
         card_index = int(get_user_input("Enter the number of the card: ", game)) 
         card = summonable_monsters[card_index]  # Update the card variable 
-
+        
         # Check if the player has enough monsters on the field to tribute 
         if len(monsters_on_field) < (2 if card.level >= 7 else 1):  # Change this to the actual tribute requirement of the monster 
             print(f"{self.name}, you do not have enough monsters on your field to tribute.") 
             return None 
-
+        
         # Ask the player to choose which monsters to tribute 
         tribute_monsters = [] 
         for _ in range(2 if card.level >= 7 else 1): 
@@ -122,7 +121,10 @@ class Player:
             monster_index = int(get_user_input("Enter the number of the monster: ", game)) 
             monster = monsters_on_field.pop(monster_index) 
             tribute_monsters.append(monster) 
-            self.field.zones[self.name]["main_monster_zones"].remove(monster) 
+            # Find the index of the monster in the monster zones
+            monster_index = self.field.zones[self.name]["main_monster_zones"].index(monster)
+            # Set the zone to None
+            self.field.zones[self.name]["main_monster_zones"][monster_index] = None
 
         # Send the tribute monsters to the graveyard and print a message 
         for monster in tribute_monsters: 
