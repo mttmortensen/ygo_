@@ -15,17 +15,17 @@ class Player:
         self.life_points = 8000
 
     def get_state(self):
-        for card in self.hand:
-            print(f"Card: {card}, Type: {type(card)}")
-        state = {
-            "name": self.name,
-            "hand": [card.get_state() for card in self.hand],
-            "field": self.field.get_state(),
-            "deck_size": len(self.deck.cards),
-            "has_normal_summoned": self.has_normal_summoned,
-            "can_summon": self.can_summon,
-        }
+        state = [
+            len(self.hand),
+            len(self.field.zones[self.name]["main_monster_zones"]),
+            len(self.deck.cards),
+            len(self.graveyard),
+            self.life_points,
+            int(self.has_normal_summoned),
+            int(self.can_summon),
+        ]
         return state
+
 
     def draw(self):
         if self.deck.cards:  # Check if the deck is not empty

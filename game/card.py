@@ -12,15 +12,14 @@ class Card:
 
 
     def get_state(self):
-        state = {
-            "name": self.name,
-            "level": self.level,
-            "type": self.card_type,
-            "position": self.position,
-            "atk": self.atk,
-            "def": self.defense,
-        }
+        state = [
+            self.level,
+            self.atk,
+            self.defense,
+            1 if self.position == 'attack' else 0,  # Convert position to a binary value
+        ]
         return state
+
     
     def __str__(self):
         return f"{self.name}, ATK: {self.atk}, DEF: {self.defense}, Level: {self.level}"

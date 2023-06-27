@@ -15,10 +15,11 @@ class Field:
         }
 
     def get_state(self):
-        state = {
-            "zones": self.zones,
-        }
+        state = [
+            sum(1 for zone in self.zones if zone is not None),  # Count the number of non-empty zones
+        ]
         return state
+
 
     def place_card(self, player, zone_type, card, position=None):
         # Check Main Monster and Spell/Traps Zones first

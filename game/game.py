@@ -13,10 +13,13 @@ class Game:
         self.game_over = False
 
     def get_state(self):
-        return {
-            "players": [player.get_state() for player in self.players],
-            "current_phase": self.current_phase,
-        }
+        state = [
+            player.get_state() for player in self.players
+        ]
+        # Flatten the list of lists into a single list
+        state = [item for sublist in state for item in sublist]
+        return state
+
 
     def start_game(self):
         # Each player draws 5 cards
