@@ -8,6 +8,8 @@ class Card:
         self.position = None  # 'attack', 'defense', or 'set'
         self.summon_requirement = 0 if level <= 4 else 1 if level <= 6 else 2
         self.has_attacked = False
+        self.summoning_sickness = False
+
 
     def get_state(self):
         state = {

@@ -82,6 +82,7 @@ class Player:
                 card.set_position(position)
                 zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):", game))
                 self.field.place_card(self.name, "main_monster_zones", card, zone_index)
+                card.summoning_sickness = True  
                 self.has_normal_summoned = True
                 self.can_summon = False
                 break
@@ -94,27 +95,32 @@ class Player:
     
     def perform_tribute_summon(self, summonable_monsters, game): 
         # Check if the player has a monster in their hand that requires a tribute 
-        if all(card.level <= 4 for card in self.hand): 
+        tribute_monsters_in_hand = [card for card in self.hand if card.level > 4]
+        if not tribute_monsters_in_hand: 
             print(f"{self.name}, you do not have any monsters in your hand that require a tribute.") 
             return None 
+
         # Check if the player has enough monsters on the field to tribute 
-        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None] 
+        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None and not zone.summoning_sickness] 
+        if not monsters_on_field:  
+            print(f"{self.name}, you do not have any monsters on your field to tribute.") 
+            return None 
 
         # If the player has a valid monster to tribute and enough monsters on the field, ask them to choose a monster to tribute summon 
         print(f"{self.name}, choose a monster to tribute summon:") 
-        for i, card in enumerate(summonable_monsters):  # Use summonable_monsters here 
+        for i, card in enumerate(tribute_monsters_in_hand):  # Use tribute_monsters_in_hand here 
             print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}") 
         card_index = int(get_user_input("Enter the number of the card: ", game)) 
-        card = summonable_monsters[card_index]  # Update the card variable 
-        
-        # Check if the player has enough monsters on the field to tribute 
-        if len(monsters_on_field) < (2 if card.level >= 7 else 1):  # Change this to the actual tribute requirement of the monster 
+        card = tribute_monsters_in_hand[card_index]  # Update the card variable 
+
+        tribute_requirement = 2 if card.level >= 7 else 1
+        if len(monsters_on_field) < tribute_requirement:  # Check if there are enough monsters on the field to tribute 
             print(f"{self.name}, you do not have enough monsters on your field to tribute.") 
             return None 
-        
+
         # Ask the player to choose which monsters to tribute 
         tribute_monsters = [] 
-        for _ in range(2 if card.level >= 7 else 1): 
+        for _ in range(tribute_requirement): 
             print(f"{self.name}, choose a monster to tribute:") 
             for i, monster in enumerate(monsters_on_field): 
                 print(f"{i}: {monster.name}") 
@@ -122,9 +128,9 @@ class Player:
             monster = monsters_on_field.pop(monster_index) 
             tribute_monsters.append(monster) 
             # Find the index of the monster in the monster zones
-            monster_index = self.field.zones[self.name]["main_monster_zones"].index(monster)
+            monster_zone_index = self.field.zones[self.name]["main_monster_zones"].index(monster)
             # Set the zone to None
-            self.field.zones[self.name]["main_monster_zones"][monster_index] = None
+            self.field.zones[self.name]["main_monster_zones"][monster_zone_index] = None
 
         # Send the tribute monsters to the graveyard and print a message 
         for monster in tribute_monsters: 
@@ -300,6 +306,9 @@ class Player:
 
     def end_phase(self):
         print(f"{self.name} is in the End Phase.")
+        for zone in self.field.zones[self.name]["main_monster_zones"]:
+            if zone is not None:
+                zone.summoning_sickness = False
 
     def get_hand_size(self):
         return len(self.hand)
