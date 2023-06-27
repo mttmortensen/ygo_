@@ -10,6 +10,7 @@ class Game:
         self.players[0].deck.shuffle()
         self.players[1].deck.shuffle()
         self.current_phase = None
+        self.game_over = False
 
     def get_state(self):
         return {
@@ -23,9 +24,8 @@ class Game:
         for player in self.players:
             for _ in range(5):
                 player.draw()
-        game_over = False  # Add a flag to indicate when the game is over
         # Game continues until a player's deck is empty
-        while not game_over:
+        while not self.game_over:
             for i in range(2):  # Use range(2) instead of self.players
                 player = self.players[i]
                 opponent = self.players[1 - i]  # Get the opponent player
@@ -39,28 +39,28 @@ class Game:
                         player.discard()  # Discard a card
                 else: # Deck out win condition
                     print(f"{player.name}'s deck is empty. {opponent.name} wins the game!")
-                    game_over = True
+                    self.game_over = True
                     self.end_game()
                     break
                 if player.life_points <= 0: # Life Point win condition
                     print(f"{player.name}'s life points have reached 0. {opponent.name} wins the game! ")
                     self.end_game()
-                    game_over = True
+                    self.game_over = True
                     break
                 elif opponent.life_points <= 0:
                     print(f"{opponent.name}'s life points have reached 0. {player.name} wins the game! ")
                     self.end_game()
-                    game_over = True  
+                    self.game_over = True  
                     break
                 else:
                     self.current_phase = "Standby Phase"  # Update current_phase
                     player.standby_phase()
-                    if game_over:
+                    if self.game_over:
                         break
 
                     self.current_phase = "Main Phase 1"  # Update current_phase
                     player.main_phase_1()
-                    if game_over:
+                    if self.game_over:
                         break
 
                     if player.can_summon:
@@ -68,30 +68,30 @@ class Game:
                         if summon_choice.lower() == 'yes':
                             check_field(self)
                             player.summon(self)
-                    if game_over:
+                    if self.game_over:
                         break
 
                     self.current_phase = "Battle Phase"  # Update current_phase
                     player.battle_phase(opponent, self.turn, self)  # Pass the opponent player as an argument
-                    if game_over:
+                    if self.game_over:
                         break
 
                     self.current_phase = "Main Phase 2"  # Update current_phase
                     player.main_phase_2()
-                    print(f"{game_over}")
-                    if game_over:
+                    print(f"{self.game_over}")
+                    if self.game_over:
                         break
                     
                     if player.can_summon:
                         summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
                         if summon_choice.lower() == 'yes':
                             player.summon(self)
-                    if game_over:
+                    if self.game_over:
                         break
 
                     self.current_phase = "End Phase"  # Update current_phase
                     player.end_phase()
-                    if game_over:
+                    if self.game_over:
                         break
 
                     self.turn += 1  # Increment the turn count at the end of each player's turn

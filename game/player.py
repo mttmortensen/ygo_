@@ -175,7 +175,7 @@ class Player:
                 print("You cannot attack on the first turn of the duel.")
                 print("End Step begins.")
                 return
-            while True:  # Add a loop to allow multiple battles
+            while not game.game_over:  # Add a loop to allow multiple battles
                 if len(self.field.zones[self.name]["main_monster_zones"]) > 0:
                     print(f"{self.name}, choose a monster to attack with:")
                     for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
@@ -194,11 +194,13 @@ class Player:
                         if opponent.life_points <= 0:
                             print(f"{opponent.name}'s life points have reached 0.")
                             print(f"{self.name} is the winner!")
+                            game.game_over = True
                             game.end_game()  # Assuming you have a method to end the game
                             return
                         elif self.life_points <= 0:
                                     print(f"{self.name}'s life points have reached 0.")
                                     print(f"{opponent.name} is the winner!")
+                                    game.game_over = True
                                     game.end_game()  # Assuming you have a method to end the game
                                     return
                         print(f"{opponent.name} loses {attacking_card.atk} life points.")
@@ -230,13 +232,15 @@ class Player:
                             if opponent.life_points <= 0:
                                 print(f"{opponent.name}'s life points have reached 0.")
                                 print(f"{self.name} is the winner!")
-                                game.end_game()  # Assuming you have a method to end the game
+                                game.game_over = True
+                                game.end_game()  
                                 return
                             elif self.life_points <= 0:
-                                    print(f"{self.name}'s life points have reached 0.")
-                                    print(f"{opponent.name} is the winner!")
-                                    game.end_game()  # Assuming you have a method to end the game
-                                    return
+                                print(f"{self.name}'s life points have reached 0.")
+                                print(f"{opponent.name} is the winner!")
+                                game.game_over = True
+                                game.end_game()  
+                                return
                             elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
                                 print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
                                 opponent.graveyard.append(defending_card)
@@ -256,12 +260,14 @@ class Player:
                                 if opponent.life_points <= 0:
                                     print(f"{opponent.name}'s life points have reached 0.")
                                     print(f"{self.name} is the winner!")
-                                    game.end_game()  # Assuming you have a method to end the game
+                                    game.game_over = True
+                                    game.end_game()  
                                     return
                                 elif self.life_points <= 0:
                                     print(f"{self.name}'s life points have reached 0.")
                                     print(f"{opponent.name} is the winner!")
-                                    game.end_game()  # Assuming you have a method to end the game
+                                    game.game_over = True
+                                    game.end_game()  
                                     return
                                 print(f"{self.name} loses {defending_card.atk - attacking_card.atk} life points.")
                             elif attacking_card.atk < defending_card.defense and defending_card.position == "defense":
@@ -270,12 +276,14 @@ class Player:
                                 if opponent.life_points <= 0:
                                     print(f"{opponent.name}'s life points have reached 0.")
                                     print(f"{self.name} is the winner!")
-                                    game.end_game()  # Assuming you have a method to end the game
+                                    game.game_over = True
+                                    game.end_game()  
                                     return
                                 elif self.life_points <= 0:
                                     print(f"{self.name}'s life points have reached 0.")
                                     print(f"{opponent.name} is the winner!")
-                                    game.end_game()  # Assuming you have a method to end the game
+                                    game.game_over = True
+                                    game.end_game()
                                     return
                                 print(f"{self.name} loses {defending_card.defense - attacking_card.atk} life points.")
 
