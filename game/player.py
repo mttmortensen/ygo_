@@ -92,42 +92,45 @@ class Player:
         elif summon_type == "tribute":
             return [card for card in self.hand if card.level > 4 and len([zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]) >= card.summon_requirement]
     
-    def perform_tribute_summon(self, summonable_monsters, game):
-        # Check if the player has a monster in their hand that requires a tribute
-        if all(card.level <= 4 for card in self.hand):
-            print(f"{self.name}, you do not have any monsters in your hand to tribute.")
-            return None
+    def perform_tribute_summon(self, summonable_monsters, game): 
+    # Check if the player has a monster in their hand that requires a tribute 
+    if all(card.level <= 4 for card in self.hand): 
+        print(f"{self.name}, you do not have any monsters in your hand to tribute.") 
+        return None
 
-        # Check if the player has enough monsters on the field to tribute
-        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None]
-        if len(monsters_on_field) < 1:  # Change this to the actual tribute requirement of the monster
-            print(f"{self.name}, you do not have any monsters on your field to tribute.")
-            return None
-        
-        # If the player has a valid monster to tribute and enough monsters on the field, ask them to choose a monster to tribute summon
-        print(f"{self.name}, choose a monster to tribute summon:")
-        for i, card in enumerate(summonable_monsters):  # Use summonable_monsters here
-            print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}")
-        card_index = int(get_user_input("Enter the number of the card: ", game))
-        card = summonable_monsters[card_index]  # Update the card variable
+    # Check if the player has enough monsters on the field to tribute 
+    monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None] 
 
-        # Ask the player to choose which monsters to tribute
-        tribute_monsters = []
-        for _ in range(card.summon_requirement):
-            print(f"{self.name}, choose a monster to tribute:")
-            for i, monster in enumerate(monsters_on_field):
-                print(f"{i}: {monster.name}")
-            monster_index = int(get_user_input("Enter the number of the monster: ", game))
-            monster = monsters_on_field.pop(monster_index)
-            tribute_monsters.append(monster)
-            self.field.zones[self.name]["main_monster_zones"].remove(monster)
+    # If the player has a valid monster to tribute and enough monsters on the field, ask them to choose a monster to tribute summon 
+    print(f"{self.name}, choose a monster to tribute summon:") 
+    for i, card in enumerate(summonable_monsters):  # Use summonable_monsters here 
+        print(f"{i}: {card.name}, ATK: {card.atk}, DEF: {card.defense}, Level: {card.level}") 
+    card_index = int(get_user_input("Enter the number of the card: ", game)) 
+    card = summonable_monsters[card_index]  # Update the card variable 
 
-        # Send the tribute monsters to the graveyard and print a message
-        for monster in tribute_monsters:
-            self.graveyard.append(monster)
-        print(f"Monster(s) {', '.join(monster.name for monster in tribute_monsters)} have been sent to the graveyard for tribute.")
+    # Check if the player has enough monsters on the field to tribute 
+    if len(monsters_on_field) < (2 if card.level >= 7 else 1):  # Change this to the actual tribute requirement of the monster 
+        print(f"{self.name}, you do not have enough monsters on your field to tribute.") 
+        return None 
 
-        return card
+    # Ask the player to choose which monsters to tribute 
+    tribute_monsters = [] 
+    for _ in range(2 if card.level >= 7 else 1): 
+        print(f"{self.name}, choose a monster to tribute:") 
+        for i, monster in enumerate(monsters_on_field): 
+            print(f"{i}: {monster.name}") 
+        monster_index = int(get_user_input("Enter the number of the monster: ", game)) 
+        monster = monsters_on_field.pop(monster_index) 
+        tribute_monsters.append(monster) 
+        self.field.zones[self.name]["main_monster_zones"].remove(monster) 
+
+    # Send the tribute monsters to the graveyard and print a message 
+    for monster in tribute_monsters: 
+        self.graveyard.append(monster) 
+    print(f"Monster(s) {', '.join(monster.name for monster in tribute_monsters)} have been sent to the graveyard for tribute.") 
+
+    return card
+
 
     def perform_normal_summon(self, summonable_monsters, game):
         # If the player wants to perform a normal summon, ask them to choose a card to summon
