@@ -41,7 +41,11 @@ class Player:
         return True
     
     def discard(self):
-        card = random.choice(self.hand)  # Choose a random card to discard
+        print(f"{self.name}, your hand is full. Choose a card to discard:")
+        for i, card in enumerate(self.hand):
+            print(f"{i}: {card}")
+        card_index = int(input("Enter the number of the card to discard: "))
+        card = self.hand[card_index]
         self.hand.remove(card)  # Remove the card from the hand
         self.graveyard.append(card)  # Add the card to the graveyard
         print(f"{self.name} discarded {card} to the graveyard.")
