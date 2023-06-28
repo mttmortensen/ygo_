@@ -203,7 +203,7 @@ class Player:
         if action.lower() == "attack":
             # Battle Step
             # Check if there are any monsters in attack position that can still attack
-            can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" for zone in self.field.zones[self.name]["main_monster_zones"])
+            can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned for zone in self.field.zones[self.name]["main_monster_zones"])
             if not can_attack:
                 print(f"{self.name}, you have no monsters in attack position to attack with.")
                 return  # Skip to the next phase
@@ -215,7 +215,7 @@ class Player:
                 if len(self.field.zones[self.name]["main_monster_zones"]) > 0:
                     print(f"{self.name}, choose a monster to attack with:")
                     for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
-                        if zone is not None and not zone.has_attacked:
+                        if zone is not None and not zone.has_attacked and not zone.has_summoned:
                             print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
                     card_index = int(get_user_input("Enter the number of the card: ", game))
                     attacking_card = self.field.zones[self.name]["main_monster_zones"][card_index]
