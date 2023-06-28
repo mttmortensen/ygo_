@@ -1,14 +1,9 @@
 from field import Field
-from game_commands import get_user_input, check_field
 
 class Game:
-    def __init__(self, player1, player2):
-        self.players = [player1, player2]
+    def __init__(self):
+        self.players = []
         self.turn = 0
-        player1.field = Field(player1.name)
-        player2.field = Field(player2.name)
-        self.players[0].deck.shuffle()
-        self.players[1].deck.shuffle()
         self.current_phase = None
         self.game_over = False
 
@@ -32,8 +27,13 @@ class Game:
             for i in range(2):  # Use range(2) instead of self.players
                 player = self.players[i]
                 opponent = self.players[1 - i]  # Get the opponent player
-                player.has_normal_summoned = False  # Reset the normal summon status
+                # Resetting status'
+                player.has_normal_summoned = False  
                 player.can_summon = True
+                for zone in player.field.zones[player.name]["main_monster_zones"]:
+                    if zone is not None:
+                        zone.can_change_position = True
+                        zone.has_changed_position = False
                 print(f"\nIt's {player.name}'s turn.")
                 if player.deck.cards:  # Only execute the Draw Phase if the deck is not empty
                     self.current_phase = "Draw Phase"  # Update current_phase                  
@@ -66,14 +66,6 @@ class Game:
                     if self.game_over:
                         break
 
-                    if player.can_summon:
-                        summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
-                        if summon_choice.lower() == 'yes':
-                            check_field(self)
-                            player.summon(self)
-                    if self.game_over:
-                        break
-
                     self.current_phase = "Battle Phase"  # Update current_phase
                     player.battle_phase(opponent, self.turn, self)  # Pass the opponent player as an argument
                     if self.game_over:
@@ -82,13 +74,6 @@ class Game:
                     self.current_phase = "Main Phase 2"  # Update current_phase
                     player.main_phase_2()
                     print(f"{self.game_over}")
-                    if self.game_over:
-                        break
-                    
-                    if player.can_summon:
-                        summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
-                        if summon_choice.lower() == 'yes':
-                            player.summon(self)
                     if self.game_over:
                         break
 

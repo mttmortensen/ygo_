@@ -1,13 +1,12 @@
-from deck import Deck
 from field import Field
-from game_commands import get_user_input
-import random
+from game_commands import get_user_input, check_field
 
 class Player:
-    def __init__(self, name, deck):
+    def __init__(self, game, name, deck):
         self.name = name
         self.hand = []
         self.deck = deck
+        self.game = game
         self.graveyard = []
         self.field = Field(self.name)
         self.has_normal_summoned = False
@@ -89,6 +88,7 @@ class Player:
                 zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):", game))
                 self.field.place_card(self.name, "main_monster_zones", card, zone_index)
                 card.summoning_sickness = True  
+                card.can_change_position = False
                 self.has_normal_summoned = True
                 self.can_summon = False
                 break
@@ -158,12 +158,20 @@ class Player:
     def change_positions(self, game):
         print(f"{self.name}, choose a monster to change it's position:")
         for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
-            if zone is not None and not zone.has_been_set:
-                print(f"{i}: {zone}")
-        index = int(get_user_input("Enter the number of the monster: ", game))
-        monster = self.field.zones[self.name]["main_monster_zones"][index]
-        new_postion = get_user_input("Enter the new position for the monster ('attack', 'defense'): ", game)
-        monster.set_position(new_postion)
+            if zone is not None and not zone.can_change_position and not zone.has_changed_position:
+                print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
+        card_index = int(get_user_input("Enter the number of the monster: ", game))
+        monster = self.field.zones[self.name]["main_monster_zones"][card_index]
+        if monster.can_change_position:
+            if monster.position == 'attack':
+                monster.position = 'defense'
+            else:
+                monster.position = 'attack'
+            monster.has_changed_position = True
+            monster.can_change_position = False
+            print(f"{monster.name} is now in {monster.position} position.")
+        else:
+            print(f"{monster.name} cannot change its position this turn.")
     
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
@@ -175,6 +183,15 @@ class Player:
     def main_phase_1(self):
         print(f"{self.name} is in Main Phase 1.")
         self.can_summon = True
+        if self.can_summon:
+            summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
+            if summon_choice.lower() == 'yes':
+                check_field(self.game)
+                self.summon(self)
+        change_position_choice = get_user_input("Would you like to change a monster's position? (yes/no): ", self)
+        if change_position_choice.lower() == 'yes':
+            self.change_positions(self)
+            check_field(self.game)
 
     def battle_phase(self, opponent, current_turn, game):
         print(f"{self.name} is in the Battle Phase.")
@@ -215,11 +232,11 @@ class Player:
                             game.end_game()  # Assuming you have a method to end the game
                             return
                         elif self.life_points <= 0:
-                                    print(f"{self.name}'s life points have reached 0.")
-                                    print(f"{opponent.name} is the winner!")
-                                    game.game_over = True
-                                    game.end_game()  # Assuming you have a method to end the game
-                                    return
+                            print(f"{self.name}'s life points have reached 0.")
+                            print(f"{opponent.name} is the winner!")
+                            game.game_over = True
+                            game.end_game()  # Assuming you have a method to end the game
+                            return
                         print(f"{opponent.name} loses {attacking_card.atk} life points.")
                         attacking_card.has_attacked = True
                     else:
@@ -258,6 +275,7 @@ class Player:
                                 game.game_over = True
                                 game.end_game()  
                                 return
+                            # Battle Damage Calculation
                             elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
                                 print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
                                 opponent.graveyard.append(defending_card)
@@ -328,11 +346,21 @@ class Player:
     def main_phase_2(self):
         print(f"{self.name} is in Main Phase 2.")
         self.can_summon = True
+        if self.can_summon:
+            summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
+            if summon_choice.lower() == 'yes':
+                self.summon(self)
+                check_field(self.game)
+        change_position_choice = get_user_input("Would you like to change a monster's position? (yes/no): ", self)
+        if change_position_choice.lower() == 'yes':
+            self.change_positions(self)
+            check_field(self.game)
 
     def end_phase(self):
         print(f"{self.name} is in the End Phase.")
         for zone in self.field.zones[self.name]["main_monster_zones"]:
             if zone is not None:
+                zone.can_change_position = True
                 zone.summoning_sickness = False
 
     def get_hand_size(self):

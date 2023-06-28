@@ -5,11 +5,17 @@ from deck import Deck
 # Initialize game
 deck1 = Deck()
 deck1.load_cards_from_db()
-player1 = Player("Player 1", deck1)
+deck1.shuffle()
 
 deck2 = Deck()
 deck2.load_cards_from_db()
-player2 = Player("Player 2", deck2)
+deck2.shuffle()
 
-game = Game(player1, player2)
+game = Game()  # Create the game first
+
+player1 = Player(game, "Player 1", deck1)  # Pass the game to the players
+player2 = Player(game, "Player 2", deck2)
+
+game.players = [player1, player2]  # Update the game's players
+
 game.start_game()
