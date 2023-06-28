@@ -84,6 +84,8 @@ class Player:
                 self.hand.remove(card)
                 position = get_user_input("Enter the battle position for the monster ('attack' or 'set'): ", game)
                 card.set_position(position)
+                if position == 'set':
+                    card.has_been_set = True
                 zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):", game))
                 self.field.place_card(self.name, "main_monster_zones", card, zone_index)
                 card.summoning_sickness = True  
@@ -152,6 +154,17 @@ class Player:
         card = summonable_monsters[card_index]  # Update the card variable
 
         return card
+    
+    def change_positions(self, game):
+        print(f"{self.name}, choose a monster to change it's position:")
+        for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
+            if zone is not None and not zone.has_been_set:
+                print(f"{i}: {zone}")
+        index = int(get_user_input("Enter the number of the monster: ", game))
+        monster = self.field.zones[self.name]["main_monster_zones"][index]
+        new_postion = get_user_input("Enter the new position for the monster ('attack', 'defense'): ", game)
+        monster.set_position(new_postion)
+    
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
 
@@ -225,7 +238,7 @@ class Player:
                             if defending_card.position == "set":
                                 print(f"{defending_card.name} is flipped face-up.")
                                 defending_card.set_position("defense")  # Assume that a flipped monster is in defense position
-
+                                defending_card.has_been_set = False
                             if attacking_card.atk > defending_card.atk and defending_card.position == "attack":
                                 print(f"{defending_card.name} is destroyed by battle.")
                                 opponent.graveyard.append(defending_card)
