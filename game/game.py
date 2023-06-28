@@ -73,7 +73,6 @@ class Game:
 
                     self.current_phase = "Main Phase 2"  # Update current_phase
                     player.main_phase_2()
-                    print(f"{self.game_over}")
                     if self.game_over:
                         break
 

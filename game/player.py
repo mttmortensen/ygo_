@@ -164,7 +164,7 @@ class Player:
 
         print(f"{self.name}, choose a monster to change it's position:")
         for i, zone in enumerate(self.field.zones[self.name]["main_monster_zones"]):
-            if zone is not None and not zone.can_change_position:
+            if zone is not None and zone.can_change_position:  # Check if the monster can change position
                 print(f"{i}: {zone.name}, Position: {zone.position}")
         card_index = int(get_user_input("Enter the number of the monster: ", game))
         monster = self.field.zones[self.name]["main_monster_zones"][card_index]
@@ -175,7 +175,7 @@ class Player:
         monster.has_changed_position = True
         monster.can_change_position = False
         print(f"{monster.name} is now in {monster.position} position.")
-    
+
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
 
@@ -187,11 +187,11 @@ class Player:
         print(f"{self.name} is in Main Phase 1.")
         self.can_summon = True
         if self.can_summon:
-            summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
+            summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self.game)
             if summon_choice.lower() == 'yes':
                 check_field(self.game)
                 self.summon(self)
-        change_position_choice = get_user_input("Would you like to change a monster's position? (yes/no): ", self)
+        change_position_choice = get_user_input("Would you like to change a monster's position? (yes/no): ", self.game)
         if change_position_choice.lower() == 'yes':
             self.change_positions(self)
 
@@ -354,11 +354,11 @@ class Player:
         print(f"{self.name} is in Main Phase 2.")
         self.can_summon = True
         if self.can_summon:
-            summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self)
+            summon_choice = get_user_input("Would you like to summon a monster? (yes/no): ", self.game)
             if summon_choice.lower() == 'yes':
                 self.summon(self)
                 check_field(self.game)
-        change_position_choice = get_user_input("Would you like to change a monster's position? (yes/no): ", self)
+        change_position_choice = get_user_input("Would you like to change a monster's position? (yes/no): ", self.game)
         if change_position_choice.lower() == 'yes':
             self.change_positions(self)
 
