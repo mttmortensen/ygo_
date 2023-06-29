@@ -88,8 +88,6 @@ class Player:
                 zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):", game))
                 self.field.place_card(self.name, "main_monster_zones", card, zone_index)
                 card.summoning_sickness = True 
-                card.has_summoned = True
-                card.can_change_position = False
                 self.has_normal_summoned = True
                 self.can_summon = False
                 break
@@ -179,6 +177,11 @@ class Player:
 
     def standby_phase(self):
         print(f"{self.name} is in the Standby Phase.")
+        # Reset summoning status and position change status
+        for zone in self.field.zones[self.name]["main_monster_zones"]:
+            if zone is not None:
+                zone.has_summoned = False
+                zone.can_change_position = True
 
     def draw_phase(self):
         print(f"{self.name} is in the Draw Phase.")
