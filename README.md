@@ -1,4 +1,3 @@
-# ygo_
 # Yu-Gi-Oh! Duel Simulator for Machine Learning
 This project is a simplified version of the popular trading card game, Yu-Gi-Oh!, designed specifically for training machine learning models. The game focuses on Normal and Tribute Summons, and only uses Normal type monsters.
 
