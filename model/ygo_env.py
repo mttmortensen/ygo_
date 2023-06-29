@@ -34,6 +34,12 @@ class YGOEnvironment:
         elif action == 'end':
             # Code to handle ending the turn
             pass
+        elif action == 'yes':
+            # Code to handle saying yes to prompts
+            pass
+        elif action == 'no':
+            # Code to handle saying no to prompts
+            pass
         elif action == 'check-field':
             # Code to handle checking the field
             pass
