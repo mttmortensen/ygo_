@@ -1,5 +1,3 @@
-from field import Field
-
 class Game:
     def __init__(self):
         self.players = []

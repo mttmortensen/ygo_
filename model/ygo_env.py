@@ -18,7 +18,7 @@ class YGOEnvironment:
         }
         return self.state
     
-    def step(self, action, player, game):
+    def step(self, action):
         # Update the game state based on the action taken by the AI
         if action == 'normal':
             pass
