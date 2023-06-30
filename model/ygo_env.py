@@ -51,3 +51,10 @@ class YGOEnvironment:
             pass
         else: 
             raise ValueError(f"Invalid action: {action}")
+        
+    def calculdate_reward(self, player, opponent, game):
+        reward = 0
+
+        # Rewarding the player for taking away LP
+        # Will have to add these properties to Player, in battle phase, damage step?
+        reward += (opponent.starting_life_points - opponent.current_life_points)
