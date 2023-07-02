@@ -55,6 +55,12 @@ class YGOEnvironment:
     def calculdate_reward(self, player, opponent, game):
         reward = 0
 
-        # Rewarding the player for taking away LP
         # Will have to add these properties to Player, in battle phase, damage step?
+
+        # Rewarding the player for taking away LP
         reward += (opponent.starting_life_points - opponent.current_life_points)
+
+        # Penalize the player for losing its own LP
+        reward -= (player.starting_life_points - player.current_life_points)
+
+        

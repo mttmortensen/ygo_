@@ -348,14 +348,14 @@ class Player:
                     if not can_attack:
                         print(f"{self.name}, you have no more monsters to attack with.")
                         return  # Skip to the next phase  
-                    # End Step
+                    # End Damage Step
                 else:
-                    print("End Step begins.")
+                    print("End Damgage Step.")
                     print(f"{self.name}'s Battle Phase ends.")
                     break
         elif action.lower() == "end":
             # End Step
-            print("End Step begins.")
+            print("End Damage Step.")
             print(f"{self.name}'s Battle Phase ends.")
 
     def main_phase_2(self):
