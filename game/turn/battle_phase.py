@@ -1,4 +1,4 @@
-from game_commands import get_user_input
+from ..game_commands import get_user_input
 
 def battle_phase(self, opponent, current_turn, game):
     print(f"{self.name} is in the Battle Phase.")
