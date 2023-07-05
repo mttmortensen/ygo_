@@ -50,7 +50,7 @@ def select_monster_to_ack_with(self, game):
 def direct_attack(self, opponent, attacking_card, game):
     print(f"{attacking_card.name} attacks {opponent.name}'s life points directly.")
     opponent.life_points -= attacking_card.atk
-    self.check_game_over(opponent, game)
+    self.game.check_game_over(opponent, game)
     print(f"{opponent.name} loses {attacking_card.atk} life points.")
     attacking_card.has_attacked = True
 
@@ -81,7 +81,7 @@ def battle_damage_calculation(self, opponent, attacking_card, defending_card, ca
         opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
         opponent.life_points -= attacking_card.atk - defending_card.atk  # Subtracting life points
         print(f"{opponent.name} loses {attacking_card.atk - defending_card.atk} life points.")
-        self.check_game_over(opponent, game)
+        self.game.check_game_over(opponent, game)
     # ATTACKING MONSTER ATK = DEFENDING MONSTER ATK
     elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
         print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
@@ -89,43 +89,28 @@ def battle_damage_calculation(self, opponent, attacking_card, defending_card, ca
         opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
         attacking_card.graveyard.append(attacking_card)
         attacking_card.field.zones[attacking_card.name]["main_monster_zones"][card_index] = None
-        self.check_game_over(opponent, game)
+        self.game.check_game_over(opponent, game)
     # ATTACKING MONSTER ATK > DEFENDING MOSNTER DEF. NO LP LOST
     elif attacking_card.atk > defending_card.defense and defending_card.position == "defense":
         print(f"{defending_card.name} is destroyed by battle.")
         opponent.graveyard.append(defending_card)
         opponent.field.zones[opponent.name]["main_monster_zones"][card_index] = None
-        self.check_game_over(opponent, game)
+        self.game.check_game_over(opponent, game)
     # ATTACKING MONSTER ATK < DEFENDING MONSTER ATK
     elif attacking_card.atk < defending_card.atk and defending_card.position == "attack":
         print(f"{attacking_card.name} is destoryed by battle and sent to the {attacking_card.name}'s Graveyard")
         attacking_card.graveyard.append(attacking_card)
         attacking_card.field.zones[attacking_card.name]["main_monster_zones"][card_index] = None
         attacking_card.life_points -= defending_card.atk - attacking_card.atk  # Subtracting life points
-        self.check_game_over(opponent, game)
+        self.game.check_game_over(opponent, game)
     # ATTACKING MONSTER ATK < DEFENDING MOSNTER DEF
     elif attacking_card.atk < defending_card.defense and defending_card.position == "defense":
         attacking_card.life_points -= defending_card.defense - attacking_card.atk  # Subtracting life points
         print(f"{self.name} loses {defending_card.defense - attacking_card.atk} life points.")
-        self.check_game_over(opponent, game)
+        self.game.check_game_over(opponent, game)
     # ATTACKING MONSTER ATK = DEFENDING MONSTER DEF. NO LP LOST
     elif attacking_card.atk == defending_card.defense and defending_card.position == "defense":
         print(f"No monsters are destroyed and no life points are lost.")
-
-def check_game_over(self, opponent, game):
-    if opponent.life_points <= 0:
-        print(f"{opponent.name}'s life points have reached 0.")
-        print(f"{self.name} is the winner!")
-        game.game_over = True
-        game.end_game()  # Assuming you have a method to end the game
-        return True
-    elif self.life_points <= 0:
-        print(f"{self.name}'s life points have reached 0.")
-        print(f"{opponent.name} is the winner!")
-        game.game_over = True
-        game.end_game()  # Assuming you have a method to end the game
-        return True
-    return False
 
 def end_battle_phase(self, game):
     continue_battle = get_user_input("Do you want to continue the Battle Phase? (yes/no): ", game)

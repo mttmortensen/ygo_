@@ -2,7 +2,6 @@ class Game:
     def __init__(self):
         self.players = []
         self.turn = 0
-        self.current_phase = None
         self.game_over = False
 
     def get_state(self):
@@ -85,6 +84,27 @@ class Game:
                     if zone is not None:
                         zone.has_attacked = False
 
+    def check_game_over(self, player, opponent):
+        if opponent.life_points <= 0:
+            print(f"{opponent.name}'s life points have reached 0.")
+            print(f"{player.name} is the winner!")
+            self.game_over = True
+            self.end_game()
+            return True
+        elif player.life_points <= 0:
+            print(f"{player.name}'s life points have reached 0.")
+            print(f"{opponent.name} is the winner!")
+            self.game_over = True
+            self.end_game()
+            return True
+        elif not player.deck.cards:  # Deck out win condition
+            print(f"{player.name}'s deck is empty. {opponent.name} wins the game!")
+            self.game_over = True
+            self.end_game()
+            return True
+        return False
+
+    
     def end_game(self):
         # Reset the game state
         self.players = []
