@@ -1,5 +1,5 @@
 from game_commands import get_user_input, check_field
-from battle_phase import BattlePhase
+from .battle_phase import BattlePhase
 
 class Turn:
     def __init__(self, player, opponent, game):
@@ -13,7 +13,7 @@ class Turn:
         print(f"\nIt's {self.player.name}'s turn.")
         if self.player.deck.cards:  # Only execute the Draw Phase if the deck is not empty
             self.current_phase = "Draw Phase"  # Update current_phase                  
-            self.player.draw_phase()
+            self.draw_phase()
             if len(self.player.hand) >= 7:  # Check if hand size exceeds 7
                 self.player.discard()  # Discard a card
         else:

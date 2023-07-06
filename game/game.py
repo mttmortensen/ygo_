@@ -1,4 +1,4 @@
-from turn import Turn
+from turn.turn import Turn
 
 class Game:
     def __init__(self):
@@ -35,7 +35,7 @@ class Game:
                         zone.has_changed_position = False
                 turn = Turn(player, opponent, self)
                 turn.play_turn()
-                if self.check_game_over():  # Check if the game is over after each turn
+                if self.check_game_over(player, opponent):  # Check if the game is over after each turn
                     break
                 self.turn += 1  # Increment the turn count at the end of each player's turn
             if self.game_over:

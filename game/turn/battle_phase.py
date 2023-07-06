@@ -1,4 +1,4 @@
-from ..game_commands import get_user_input
+from game_commands import get_user_input
 
 class BattlePhase:
     def __init__(self, player, opponent, game):

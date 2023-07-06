@@ -175,14 +175,6 @@ class Player:
         monster.can_change_position = False
         print(f"{monster.name} is now in {monster.position} position.")
 
-    def standby_phase(self):
-        print(f"{self.name} is in the Standby Phase.")
-        # Reset summoning status and position change status
-        for zone in self.field.zones[self.name]["main_monster_zones"]:
-            if zone is not None:
-                zone.has_summoned = False
-                zone.can_change_position = True
-
     def get_hand_size(self):
         return len(self.hand)
 
