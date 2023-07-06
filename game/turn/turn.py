@@ -1,5 +1,5 @@
 from game_commands import get_user_input, check_field
-from battle_phase import battle_phase
+from battle_phase import BattlePhase
 
 class Turn:
     def __init__(self, player, opponent, game):
@@ -7,6 +7,7 @@ class Turn:
         self.opponent = opponent
         self.game = game
         self.current_phase = None
+        self.battle_phase = BattlePhase(player, opponent, game)  # Pass the opponent player as an argument
 
     def play_turn(self):
         print(f"\nIt's {self.player.name}'s turn.")
@@ -15,21 +16,6 @@ class Turn:
             self.player.draw_phase()
             if len(self.player.hand) >= 7:  # Check if hand size exceeds 7
                 self.player.discard()  # Discard a card
-        else: # Deck out win condition
-            print(f"{self.player.name}'s deck is empty. {self.opponent.name} wins the game!")
-            self.game.game_over = True
-            self.game.end_game()
-            return
-        if self.player.life_points <= 0: # Life Point win condition
-            print(f"{self.player.name}'s life points have reached 0. {self.opponent.name} wins the game! ")
-            self.game.end_game()
-            self.game.game_over = True
-            return
-        elif self.opponent.life_points <= 0:
-            print(f"{self.opponent.name}'s life points have reached 0. {self.player.name} wins the game! ")
-            self.game.end_game()
-            self.game.game_over = True  
-            return
         else:
             self.current_phase = "Standby Phase"  # Update current_phase
             self.standby_phase()
@@ -40,7 +26,7 @@ class Turn:
             if self.game.game_over:
                 return
             self.current_phase = "Battle Phase"  # Update current_phase
-            battle_phase(self, self.opponent, self.game.turn, self.game)  # Pass the opponent player as an argument
+            self.battle_phase.battle_phase()
             if self.game.game_over:
                 return
             self.current_phase = "Main Phase 2"  # Update current_phase
