@@ -37,7 +37,6 @@ class Game:
                 turn.play_turn()
                 if self.check_game_over(player, opponent):  # Check if the game is over after each turn
                     break
-                self.turn += 1  # Increment the turn count at the end of each player's turn
             if self.game_over:
                 break
             for player in self.players: # Reseting monsters that have attacked  for this turn

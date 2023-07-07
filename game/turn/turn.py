@@ -10,11 +10,12 @@ class Turn:
         self.battle_phase = BattlePhase(player, opponent, game)  # Pass the opponent player as an argument
 
     def play_turn(self):
+        self.game.turn += 1  # Increment the turn count at the start of each player's turn
         print(f"\nIt's {self.player.name}'s turn.")
-        if self.player.deck.cards:  # Only execute the Draw Phase if the deck is not empty
-            self.current_phase = "Draw Phase"  # Update current_phase                  
+        if self.game.turn > 2:  # Skip the draw phase during the first round of turns
+            self.current_phase = "Draw Phase"
             self.draw_phase()
-            if len(self.player.hand) >= 7:  # Check if hand size exceeds 7
+            if len(self.player.hand) > 7:  # Check if hand size exceeds 7
                 self.player.discard()  # Discard a card
         else:
             self.current_phase = "Standby Phase"  # Update current_phase
@@ -37,7 +38,7 @@ class Turn:
             self.end_phase()
 
     def standby_phase(self):
-        print(f"{self.name} is in the Standby Phase.")
+        print(f"{self.player.name} is in the Standby Phase.")
         # Reset summoning status and position change status
         for zone in self.player.field.zones[self.player.name]["main_monster_zones"]:
             if zone is not None:

@@ -32,12 +32,11 @@ class Player:
             self.hand.append(card)
             print(f"{self.name} drew {card}")
             self.show_hand()
-            if len(self.hand) > 7:  # Check if hand size exceeds 7
-                self.discard()  # Discard a card
         else:
             print(f"{self.name}'s deck is empty. The game is over.")
             return False
         return True
+
     
     def discard(self):
         print(f"{self.name}, your hand is full. Choose a card to discard:")
