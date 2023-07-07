@@ -7,7 +7,7 @@ class BattlePhase:
         self.game = game
 
     def battle_phase(self):
-        print(f"{self.name} is in the Battle Phase.")
+        print(f"{self.player.name} is in the Battle Phase.")
         print("Start Step begins.")
         print("Battle Step begins.")
         action = get_user_input("Do you want to attack with a monster or end your Battle Phase? (attack/end): ", self.game)
@@ -33,9 +33,9 @@ class BattlePhase:
     def perform_battle(self):
         can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned for zone in self.player.field.zones[self.player.name]["main_monster_zones"])
         if not can_attack:
-            print(f"{self.name}, you have no more monsters to attack with.")
+            print(f"{self.player.name}, you have no more monsters to attack with.")
             return  # Skip to the next phase
-        attacking_card = self.select_monster_to_attack_with()
+        attacking_card = self.select_monster_to_ack_with()
         # Check if the monster has summoning sickness
         if not attacking_card.has_attacked and not attacking_card.summoning_sickness:
             # Check if there are any monsters on the opponent's field
@@ -46,12 +46,12 @@ class BattlePhase:
                 self.attack_monser(attacking_card)
 
     def select_monster_to_ack_with(self):
-        print(f"{self.name}, choose a monster to attack with:")
+        print(f"{self.player.name}, choose a monster to attack with:")
         for i, zone in enumerate(self.player.field.zones[self.player.name]["main_monster_zones"]):
             if zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned:
                 print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
         card_index = int(get_user_input("Enter the number of the card: ", self.game))
-        return self.player.field.zonez[self.player.name]["main_monster_zones"][card_index]
+        return self.player.field.zones[self.player.name]["main_monster_zones"][card_index]
 
     def direct_attack(self, attacking_card):
         print(f"{attacking_card.name} attacks {self.opponent.name}'s life points directly.")
@@ -61,7 +61,7 @@ class BattlePhase:
         attacking_card.has_attacked = True
 
     def attack_monster(self, attacking_card):
-        print(f"{self.name}, choose a monster to attack:")
+        print(f"{self.player.name}, choose a monster to attack:")
         for i, zone in enumerate(self.opponent.field.zones[self.opponent.name]["main_monster_zones"]):
             if zone is not None:
                 print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")  # Corrected here

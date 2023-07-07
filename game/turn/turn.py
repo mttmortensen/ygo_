@@ -12,30 +12,31 @@ class Turn:
     def play_turn(self):
         self.game.turn += 1  # Increment the turn count at the start of each player's turn
         print(f"\nIt's {self.player.name}'s turn.")
-        if self.game.turn > 2:  # Skip the draw phase during the first round of turns
-            self.current_phase = "Draw Phase"
-            self.draw_phase()
-            if len(self.player.hand) > 7:  # Check if hand size exceeds 7
-                self.player.discard()  # Discard a card
-        else:
-            self.current_phase = "Standby Phase"  # Update current_phase
-            self.standby_phase()
-            if self.game.game_over:
-                return
-            self.current_phase = "Main Phase 1"  # Update current_phase
-            self.main_phase_1()
-            if self.game.game_over:
-                return
-            self.current_phase = "Battle Phase"  # Update current_phase
-            self.battle_phase.battle_phase()
-            if self.game.game_over:
-                return
-            self.current_phase = "Main Phase 2"  # Update current_phase
-            self.main_phase_2()
-            if self.game.game_over:
-                return
-            self.current_phase = "End Phase"  # Update current_phase
-            self.end_phase()
+        self.current_phase = "Draw Phase"
+        self.draw_phase()
+        print(f"THE PHASE IS: {self.current_phase}")
+        if self.game.game_over:
+            return
+        self.current_phase = "Standby Phase"  # Update current_phase
+        self.standby_phase()
+        if self.game.game_over:
+            return
+        self.current_phase = "Main Phase 1"  # Update current_phase
+        self.main_phase_1()
+        if self.game.game_over:
+            return
+        self.current_phase = "Battle Phase"  # Update current_phase
+        self.battle_phase.battle_phase()
+        if self.game.game_over:
+            return
+        self.current_phase = "Main Phase 2"  # Update current_phase
+        self.main_phase_2()
+        if self.game.game_over:
+            return
+        self.current_phase = "End Phase"  # Update current_phase
+        self.end_phase()
+        if len(self.player.hand) > 7:  # Check if hand size exceeds 7
+            self.player.discard()  # Discard a card
 
     def standby_phase(self):
         print(f"{self.player.name} is in the Standby Phase.")
