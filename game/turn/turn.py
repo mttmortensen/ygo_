@@ -14,7 +14,6 @@ class Turn:
         print(f"\nIt's {self.player.name}'s turn.")
         self.current_phase = "Draw Phase"
         self.draw_phase()
-        print(f"THE PHASE IS: {self.current_phase}")
         if self.game.game_over:
             return
         self.current_phase = "Standby Phase"  # Update current_phase
@@ -79,4 +78,3 @@ class Turn:
         for zone in self.player.field.zones[self.player.name]["main_monster_zones"]:
             if zone is not None:
                 zone.can_change_position = True
-                zone.summoning_sickness = False

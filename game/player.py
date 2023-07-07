@@ -86,7 +86,6 @@ class Player:
                     card.has_been_set = True
                 zone_index = int(get_user_input("Choose a monster zone to place the card in (0: far-left, 1: left, 2: center, 3: right, 4: far-right):", game))
                 self.field.place_card(self.name, "main_monster_zones", card, zone_index)
-                card.summoning_sickness = True 
                 self.has_normal_summoned = True
                 self.can_summon = False
                 break
@@ -105,7 +104,7 @@ class Player:
             return None 
 
         # Check if the player has enough monsters on the field to tribute 
-        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None and not zone.summoning_sickness] 
+        monsters_on_field = [zone for zone in self.field.zones[self.name]["main_monster_zones"] if zone is not None] 
         if not monsters_on_field:  
             print(f"{self.name}, you do not have any monsters on your field to tribute.") 
             return None 

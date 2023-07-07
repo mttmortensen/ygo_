@@ -12,7 +12,9 @@ class BattlePhase:
         print("Battle Step begins.")
         action = get_user_input("Do you want to attack with a monster or end your Battle Phase? (attack/end): ", self.game)
         if action.lower() == "attack":
-            # Battle Step
+            if self.game.turn == 1 and self.player == self.game.players[0]:  # Check if it's the first turn of the game
+                print("You cannot attack on the first turn of the game.")
+                return
             self.start_battle_step()
         elif action.lower() == "end":
             # End Step
@@ -29,6 +31,10 @@ class BattlePhase:
             return
         while not self.game.game_over:  # Add a loop to allow multiple battles
             self.perform_battle()
+            can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned for zone in self.player.field.zones[self.player.name]["main_monster_zones"])
+            print(f"CAN_ATTACK IS AT: {can_attack}")
+            if not can_attack:
+                break
 
     def perform_battle(self):
         can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned for zone in self.player.field.zones[self.player.name]["main_monster_zones"])
@@ -37,13 +43,13 @@ class BattlePhase:
             return  # Skip to the next phase
         attacking_card = self.select_monster_to_ack_with()
         # Check if the monster has summoning sickness
-        if not attacking_card.has_attacked and not attacking_card.summoning_sickness:
+        if not attacking_card.has_attacked:
             # Check if there are any monsters on the opponent's field
             opponent_has_monsters = any(zone is not None for zone in self.opponent.field.zones[self.opponent.name]["main_monster_zones"])
             if not opponent_has_monsters:
                 self.direct_attack(attacking_card)
             else: 
-                self.attack_monser(attacking_card)
+                self.attack_monster(attacking_card)
 
     def select_monster_to_ack_with(self):
         print(f"{self.player.name}, choose a monster to attack with:")
@@ -51,7 +57,9 @@ class BattlePhase:
             if zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned:
                 print(f"{i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
         card_index = int(get_user_input("Enter the number of the card: ", self.game))
-        return self.player.field.zones[self.player.name]["main_monster_zones"][card_index]
+        selected_monster = self.player.field.zones[self.player.name]["main_monster_zones"][card_index]
+        print(f"Selected monster: {selected_monster.name}, has attacked: {selected_monster.has_attacked}")
+        return selected_monster
 
     def direct_attack(self, attacking_card):
         print(f"{attacking_card.name} attacks {self.opponent.name}'s life points directly.")
@@ -87,7 +95,7 @@ class BattlePhase:
             self.opponent.field.zones[self.opponent.name]["main_monster_zones"][card_index] = None
             self.opponent.life_points -= attacking_card.atk - defending_card.atk  # Subtracting life points
             print(f"{self.opponent.name} loses {attacking_card.atk - defending_card.atk} life points.")
-            self.game.check_game_over(self.opponent, self.game)
+            self.game.check_game_over(self.player, self.opponent)
         # ATTACKING MONSTER ATK = DEFENDING MONSTER ATK
         elif attacking_card.atk == defending_card.atk and defending_card.position == "attack":
             print(f"Both {attacking_card.name} and {defending_card.name} went to the Graveyard")
