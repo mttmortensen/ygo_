@@ -61,9 +61,10 @@ class BattlePhase:
     def direct_attack(self, attacking_card):
         print(f"{attacking_card.name} attacks {self.opponent.name}'s life points directly.")
         self.opponent.life_points -= attacking_card.atk
-        self.game.check_game_over(self.opponent, self.game)
         print(f"{self.opponent.name} loses {attacking_card.atk} life points.")
         attacking_card.has_attacked = True
+        self.game.check_game_over(self.opponent, self.player)
+
 
     def attack_monster(self, attacking_card):
         print(f"{self.player.name}, choose a monster to attack:")
@@ -109,16 +110,17 @@ class BattlePhase:
             self.game.check_game_over(self.player, self.opponent)  # Changed from self.game.check_game_over(self.opponent, self.game)
         # ATTACKING MONSTER ATK < DEFENDING MONSTER ATK
         elif attacking_card.atk < defending_card.atk and defending_card.position == "attack":
-            print(f"{attacking_card.name} is destoryed by battle and sent to the {attacking_card.name}'s Graveyard")
-            self.player.graveyard.append(attacking_card)  # Changed from attacking_card.graveyard.append(attacking_card)
-            self.player.field.zones[self.player.name]["main_monster_zones"][card_index] = None  # Changed from attacking_card.field.zones[attacking_card.name]["main_monster_zones"][card_index] = None
+            print(f"{attacking_card.name} is destroyed by battle and sent to the {self.player.name}'s Graveyard")
+            self.player.graveyard.append(attacking_card)
+            self.player.field.zones[self.player.name]["main_monster_zones"][card_index] = None
             self.player.life_points -= defending_card.atk - attacking_card.atk  # Subtracting life points
-            self.game.check_game_over(self.player, self.opponent)  # Changed from self.game.check_game_over(self.opponent, self.game)
+            print(f"{self.player.name} loses {defending_card.defense - attacking_card.atk} life points.")
+            self.game.check_game_over(self.opponent, self.player)
         # ATTACKING MONSTER ATK < DEFENDING MOSNTER DEF
         elif attacking_card.atk < defending_card.defense and defending_card.position == "defense":
             self.player.life_points -= defending_card.defense - attacking_card.atk  # Subtracting life points
-            print(f"{self.player.name} loses {defending_card.defense - attacking_card.atk} life points.")  # Changed from self.name to self.player.name
-            self.game.check_game_over(self.player, self.opponent)  # Changed from self.game.check_game_over(self.opponent, self.game)
+            print(f"{self.player.name} loses {defending_card.defense - attacking_card.atk} life points.")
+            self.game.check_game_over(self.opponent, self.player)
         # ATTACKING MONSTER ATK = DEFENDING MONSTER DEF. NO LP LOST
         elif attacking_card.atk == defending_card.defense and defending_card.position == "defense":
             print(f"No monsters are destroyed and no life points are lost.")
