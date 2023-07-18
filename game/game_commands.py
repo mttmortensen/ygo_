@@ -20,22 +20,25 @@ def check_field(game):
         print(f"{player.name}'s hand size is: {len(player.hand)}")
         print(f"{player.name}'s deck size is: {len(player.deck.cards)}")
         print(f"{player.name}'s graveyard size is: {len(player.graveyard)}")
-        print("\nField:")
-        for player in game.players:
-            print(f"{player.name}'s field:")
-            print("Main Monster Zones:")
-            for i, zone in enumerate(player.field.zones[player.name]["main_monster_zones"]):
-                if zone is not None:
-                    print(f"Zone {i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
-                else:
-                    print(f"Zone {i}: Empty")
-            print("Spell and Trap Zones:")
-            for i, zone in enumerate(player.field.zones[player.name]["spell_and_trap_zones"]):
-                if zone is not None:
-                    print(f"Zone {i}: {zone.name}")
-                else:
-                    print(f"Zone {i}: Empty")
         print("\n")
+        
+    print("\nField:")
+    for player in game.players:
+        print(f"{player.name}'s field:")
+        print("Main Monster Zones:")
+        for i, zone in enumerate(player.field.zones[player.name]["main_monster_zones"]):
+            if zone is not None:
+                print(f"Zone {i}: {zone.name}, ATK: {zone.atk}, DEF: {zone.defense}, Level: {zone.level}, Position: {zone.position}")
+            else:
+                print(f"Zone {i}: Empty")
+        print("Spell and Trap Zones:")
+        for i, zone in enumerate(player.field.zones[player.name]["spell_and_trap_zones"]):
+            if zone is not None:
+                print(f"Zone {i}: {zone.name}")
+            else:
+                print(f"Zone {i}: Empty")
+        print("\n")
+
 
 def check_graveyard(game):
     for player in game.players:
