@@ -52,15 +52,33 @@ class YGOEnvironment:
         else: 
             raise ValueError(f"Invalid action: {action}")
         
-    def calculdate_reward(self, player, opponent, game):
-        reward = 0
+    def calculate_reward(self, player, opponent):
+            reward = 0
 
-        # Will have to add these properties to Player, in battle phase, damage step?
+            # Reward the player for reducing the opponent's Life Points
+            reward += (opponent.starting_life_points - opponent.current_life_points)
 
-        # Rewarding the player for taking away LP
-        reward += (opponent.starting_life_points - opponent.current_life_points)
+            # Penalize the player for losing its own Life Points
+            reward -= (player.starting_life_points - player.current_life_points)
 
-        # Penalize the player for losing its own LP
-        reward -= (player.starting_life_points - player.current_life_points)
+            # Give a large reward for winning the game
+            if opponent.current_life_points <= 0:
+                reward += 1000
 
-        
+            # Give a large penalty for losing the game
+            if player.current_life_points <= 0:
+                reward -= 1000
+
+            # Reward the player for each successful normal summon
+            reward += player.normal_summons * 10
+
+            # Reward the player for each successful tribute summon
+            reward += player.tribute_summons * 20
+
+            # Penalize the player for each monster that was destroyed
+            reward -= player.monsters_destroyed * 5
+
+            # Reward the player for each attacking monster on their turn
+            reward += player.attacking_monster * 10
+
+            return reward
