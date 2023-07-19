@@ -36,19 +36,24 @@ class BattlePhase:
                 break
 
     def perform_battle(self):
-        can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned for zone in self.player.field.zones[self.player.name]["main_monster_zones"])
-        if not can_attack:
-            print(f"{self.player.name}, you have no more monsters to attack with.")
-            return  # Skip to the next phase
-        attacking_card = self.select_monster_to_ack_with()
-        # Check if the monster has summoning sickness
-        if not attacking_card.has_attacked:
-            # Check if there are any monsters on the opponent's field
-            opponent_has_monsters = any(zone is not None for zone in self.opponent.field.zones[self.opponent.name]["main_monster_zones"])
-            if not opponent_has_monsters:
-                self.direct_attack(attacking_card)
-            else: 
-                self.attack_monster(attacking_card)
+        while True:
+            can_attack = any(zone is not None and not zone.has_attacked and zone.position == "attack" and not zone.has_summoned for zone in self.player.field.zones[self.player.name]["main_monster_zones"])
+            if not can_attack:
+                print(f"{self.player.name}, you have no more monsters to attack with.")
+                break  # Skip to the next phase
+            attacking_card = self.select_monster_to_ack_with()
+            # Check if the monster has summoning sickness
+            if not attacking_card.has_attacked:
+                # Check if there are any monsters on the opponent's field
+                opponent_has_monsters = any(zone is not None for zone in self.opponent.field.zones[self.opponent.name]["main_monster_zones"])
+                if not opponent_has_monsters:
+                    self.direct_attack(attacking_card)
+                else: 
+                    self.attack_monster(attacking_card)
+            continue_battle = input("Do you want to continue the Battle Phase? (yes/no): ")
+            if continue_battle.lower() == 'no':
+                break
+
 
     def select_monster_to_ack_with(self):
         print(f"{self.player.name}, choose a monster to attack with:")
